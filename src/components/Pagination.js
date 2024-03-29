@@ -21,7 +21,7 @@ const Pagination = ( { pageNumbers, currentPage, handlePrevPage, totalPages, set
 
         
         <div className='product-pagination'>
-            <img src='/img/controls/Flecha_izq_generos.png' onClick={handlePrevClick} className={currentPage === 1 ? 'disabled' : ''}></img>
+            <img alt='flecha_izquierda_navegacion' src='/img/controls/Flecha_izq_generos.png' onClick={handlePrevClick} className={currentPage === 1 ? 'disabled' : ''}></img>
             <div className="page-numbers">
                 {pageNumbers.map(number => (
                     <button
@@ -33,7 +33,7 @@ const Pagination = ( { pageNumbers, currentPage, handlePrevPage, totalPages, set
                     </button>
                 ))}
             </div>
-            <img src='/img/controls/Flecha_der_generos.png' onClick={handleNextClick} className={currentPage === totalPages ? 'disabled' : ''}></img>
+            <img alt='flecha_derecha_navegacion' src='/img/controls/Flecha_der_generos.png' onClick={handleNextClick} className={currentPage === totalPages ? 'disabled' : ''}></img>
         </div>
     )
 }

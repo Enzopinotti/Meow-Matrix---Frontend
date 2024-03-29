@@ -41,7 +41,7 @@ const LikeButtom = ({ onAuthPopup, user }) => {
 
   return (
     <div className="likes-buttom" onClick={handleCartButtonClick}>
-        <img src='./img/icons/corazon.png' className='img-cart-button'></img>
+        <img alt='corazon_likes' src='./img/icons/corazon.png' className='img-cart-button'></img>
     </div>
   )
 }

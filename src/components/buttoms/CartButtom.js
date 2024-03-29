@@ -28,7 +28,7 @@ const CartButtom = ({ user }) => {
   // Si el usuario está autenticado, el enlace funciona como de costumbre
   if (user) {
     return (
-      <Link to={'./cart'} className="cart-button"><img src='./img/icons/carrito.png' className='img-cart-button'></img></Link>
+      <Link to={'./cart'} className="cart-button"><img alt='carrito_icono'  src='./img/icons/carrito.png' className='img-cart-button'></img></Link>
     );
   }
 

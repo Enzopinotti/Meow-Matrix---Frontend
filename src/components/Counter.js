@@ -5,7 +5,7 @@ import { CartContext } from '../components/Contexts/CartContext';
 
 const Counter = ({ initialValue = 1, stock, productId }) => {
 
-    const { cart, updateCart, removeFromCart } = useContext(CartContext);
+    const { cart, updateCart } = useContext(CartContext);
     console.log(cart);
     const result = useCounter(initialValue);
     const handleIncrement = async () => {

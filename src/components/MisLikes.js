@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from './Contexts/AuthContext';
 import { formatPrice } from '../utils/ProductUtils';
 
-const MisLikes = ({  }) => {
+const MisLikes = () => {
     const [favoritos, setFavoritos] = useState([]);
-    const { user } = useContext(AuthContext);
 
     const handleRemoveFavorite = async (_id) => {
         try {
