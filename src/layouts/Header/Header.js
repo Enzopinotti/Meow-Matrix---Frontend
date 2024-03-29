@@ -7,7 +7,7 @@ import CartButtom from "../../components/buttoms/CartButtom";
 import LikeButtom from "../../components/buttoms/LikeButtom";
 import UserProfileDropdown from '../../components/UserProfileDropdown ';
 import { AuthContext } from '../../components/Contexts/AuthContext';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 
 const Header = () => {
     // Obtener la ubicación actual

@@ -36,7 +36,7 @@ const CartButtom = ({ user }) => {
   return (
 
     <div className="cart-button">
-        <img src='./img/icons/carrito.png' className='img-cart-button' onClick={handleCartButtonClick}></img>
+        <img alt='carrito_icono' src='./img/icons/carrito.png' className='img-cart-button' onClick={handleCartButtonClick}></img>
     </div>
     
     
