@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 const TicketContainer = () => {
     const [ticketDetails, setTicketDetails] = useState(null);
     const { getTicketDetails } = useContext(CartContext);
-
+    
     useEffect(() => {
         const fetchTicketDetails = async () => {
             try {

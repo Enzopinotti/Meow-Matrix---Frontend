@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ProductContainer from '../Product/ProductContainer';
 import Pagination from '../Pagination';
 const ProductList = ({ products, currentPage, totalPages, handleNextPage, handlePrevPage, setCurrentPage }) => {
