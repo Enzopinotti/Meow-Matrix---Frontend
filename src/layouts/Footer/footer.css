@@ -1,0 +1,27 @@
+.footer-container {
+    background-color: #333333;
+    padding: 2rem;
+  }
+  
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .footer-title {
+    color: #ffffff;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-text {
+    color: #ffffff;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-text:last-child {
+    margin-bottom: 0;
+  }
+  
