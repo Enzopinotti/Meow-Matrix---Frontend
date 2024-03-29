@@ -30,7 +30,7 @@ const CartContainer = () => {
         };
 
         fetchCart();
-    }, []);
+    }, [setCart]);
 
 
     return <Cart cart={cart} removeFromCart={removeFromCart} removeAllFromCart={removeAllFromCart} user={user} calculateTotalPrice={calculateTotalPrice} purchaseCart={purchaseCart} />;

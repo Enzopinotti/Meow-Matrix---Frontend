@@ -60,7 +60,7 @@ const UserProfileDropdown = (props) => {
             {dropdownOpen && (
                 <ul className="profile-dropdown" ref={dropdownRef}>
                     <li><Link to="/profile">Perfil</Link></li>
-                    <li onClick={handleLogout}><a>Cerrar sesión</a></li>
+                    <li onClick={handleLogout}>Cerrar sesión</li>
                 </ul>
             )}
         </div>
@@ -68,4 +68,3 @@ const UserProfileDropdown = (props) => {
 }
 
 export default UserProfileDropdown;
-
