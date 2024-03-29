@@ -100,7 +100,7 @@ const MisDatos = () => {
                         setUser(data.payload.user);
                     }else{
                         console.log('No hay token')
-                        setUser(userData.payload)
+                        setUser(data.payload)
                     }
                     
                     Swal.fire({
