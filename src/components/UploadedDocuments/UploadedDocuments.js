@@ -2,8 +2,7 @@ import React from "react";
 import DocumentItem from "./DocumentItem";
 import Swal from 'sweetalert2';
 
-const UploadedDocuments = ({ documents, wantPremium }) => {
-    console.log(documents);
+const UploadedDocuments = ({ documents, wantPremium, userRol }) => {
 
     const handlePremiumRequest = async () => {
         try {
@@ -43,6 +42,19 @@ const UploadedDocuments = ({ documents, wantPremium }) => {
             });
         }
     };
+    if (userRol === 'premium') {
+        return (
+            <section className="uploaded-documents">
+                <h2 className="section-title">Documentación Cargada</h2>
+                <ul className="document-list">
+                    {documents.map((document, index) => (
+                        <DocumentItem key={index} documento={document} />
+                    ))}
+                </ul>
+                <p>Eres un usuario premium, no puedes solicitar ser premium.</p>
+            </section>
+        )
+    }
 
     return (
         <section className="uploaded-documents">

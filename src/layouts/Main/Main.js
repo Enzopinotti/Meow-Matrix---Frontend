@@ -20,8 +20,8 @@ const Main = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/recoveryPass" element={<RecoveryPass />} />
             <Route path="/resetPassword/:token" element={<ResetPassword />} />
-            <Route path="/juegos" element={<ProductListContainer />} />
-            <Route path="/juegos/:id" element={<ProductDetailContainer />} />
+            <Route path="/products" element={<ProductListContainer />} />
+            <Route path="/products/:id" element={<ProductDetailContainer />} />
             <Route path="/categories" element={<Counter />} />
             <Route path="/sobreNosotros" element={<Counter />} />
             <Route path="/cart" element={<CartContainer />} />

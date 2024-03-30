@@ -24,6 +24,7 @@ const UserListContainer = () => {
                 }
                 
                 const data = await response.json();
+                console.log(data)
                 setUsers(data.payload.users.docs);
                 setTotalPages(Math.ceil(data.payload.totalDocs / 7)); // 16 es el límite por página
             } catch (error) {
@@ -130,6 +131,82 @@ const UserListContainer = () => {
         }
     };
 
+    const handleDeleteUser = async (userId) => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            
+            if (response.ok) {
+                // Si la respuesta es exitosa, muestra un mensaje de éxito utilizando Swal
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: 'El usuario ha sido eliminado correctamente.',
+                });
+                const updatedUser = await response.json()
+                setUser(updatedUser)
+            } else {
+                // Si hay un error en la respuesta, muestra un mensaje de error utilizando Swal
+                console.error('Error al eliminar el usuario');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un error al eliminar el usuario.',
+                });
+            }
+        } catch (error) {
+            // Si hay un error en la solicitud, muestra un mensaje de error utilizando Swal
+            console.error('Error al eliminar el usuario:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un error al eliminar el usuario.',
+            });
+        }
+    };
+
+    const handleDeleteInactiveUsers = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/api/users/inactive', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            
+            if (response.ok) {
+                // Si la respuesta es exitosa, muestra un mensaje de éxito utilizando Swal
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: 'Los usuarios inactivos han sido eliminados correctamente.',
+                });
+                const deletedUsers = await response.json()
+                // Implementar lógica para actualizar la lista de usuarios en el estado si es necesario
+            } else {
+                // Si hay un error en la respuesta, muestra un mensaje de error utilizando Swal
+                console.error('Error al eliminar usuarios inactivos');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un error al eliminar usuarios inactivos.',
+                });
+            }
+        } catch (error) {
+            // Si hay un error en la solicitud, muestra un mensaje de error utilizando Swal
+            console.error('Error al eliminar usuarios inactivos:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un error al eliminar usuarios inactivos.',
+            });
+        }
+    };
+
     return (
         <UsersList 
             users={users}
@@ -141,6 +218,8 @@ const UserListContainer = () => {
             setCurrentPage={setCurrentPage}
             handleAcceptPremiumRequest={handleAcceptPremiumRequest}
             handleRejectPremiumRequest={handleRejectPremiumRequest}
+            handleDeleteUser={handleDeleteUser}
+            handleDeleteInactiveUsers={handleDeleteInactiveUsers}
         />
     );
 };

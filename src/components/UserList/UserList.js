@@ -1,8 +1,9 @@
 import React from 'react';
 import Pagination from '../Pagination';
 import { formatDate } from '../../utils/ProductUtils';
+import Swal from 'sweetalert2';
 
-const UsersList = ({ users, currentPage, totalPages, pageNumbers, handlePrevPage, handleNextPage, setCurrentPage, handleAcceptPremiumRequest, handleRejectPremiumRequest }) => {
+const UsersList = ({ users, currentPage, totalPages, pageNumbers, handlePrevPage, handleNextPage, setCurrentPage, handleAcceptPremiumRequest, handleRejectPremiumRequest, handleDeleteUser, handleDeleteInactiveUsers }) => {
     
 
     const handleDownload = (documento) => {
@@ -28,13 +29,34 @@ const UsersList = ({ users, currentPage, totalPages, pageNumbers, handlePrevPage
         }
     };
 
+    const confirmDeleteUser = (userId) => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción eliminará permanentemente al usuario. ¿Estás seguro de continuar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar usuario',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                handleDeleteUser(userId);
+            }
+        });
+    };
+
     return (
         <section className="users-list">
+            <button className="delete-inactive-users-button" onClick={handleDeleteInactiveUsers}>Eliminar Usuarios Inactivos</button>
             <div className="user-cards">
                 {users.map(user => (
                     user.rol !== 'admin' && (
                         <div className="user-card" key={user._id}>
-                            <div className="user-avatar">
+                            <div className='delete_user' onClick={() => confirmDeleteUser(user._id)}>
+                                <img src='./img/remove.png' alt="Eliminar Usuario" />
+                            </div>
+                            <div className="user-avatar" onClick={() => confirmDeleteUser(user._id)}>
                                 {user.avatar ? (
                                     <img src={`http://localhost:8080${user.avatar}?${new Date().getTime()}`} alt="Avatar" />
                                 ) : (
@@ -57,7 +79,7 @@ const UsersList = ({ users, currentPage, totalPages, pageNumbers, handlePrevPage
                                         ))}
                                     </ul>
                                 </div>
-                                {user.wantPremium && ( // Verifica si el usuario quiere ser premium
+                                {user.wantPremium && ( 
                                     <div className="premium-request-buttons">
                                         <button className='register-button' onClick={() => handleAcceptPremiumRequest(user._id)}>Aceptar Solicitud de Premium</button>
                                         <button className='submit-button btnRechazo' onClick={() => handleRejectPremiumRequest(user._id)}>Rechazar Solicitud de Premium</button>
@@ -79,5 +101,4 @@ const UsersList = ({ users, currentPage, totalPages, pageNumbers, handlePrevPage
         </section>
     );
 };
-
 export default UsersList;

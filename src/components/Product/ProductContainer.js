@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Product from './Product';
 import { isLiked } from '../../utils/ProductUtils';
 import { AuthContext } from '../Contexts/AuthContext';
 import Swal from 'sweetalert2';
 
-
-
 const ProductContainer = ({ _id, thumbnails, name, stock, price }) => {
     const { user, setUser } = useContext(AuthContext);
+    const navigate = useNavigate(); 
+
     const handleFavoriteClick = async () => {
         try {
             if (user) {
@@ -17,7 +18,6 @@ const ProductContainer = ({ _id, thumbnails, name, stock, price }) => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    // Si necesitas enviar datos adicionales, puedes incluirlos aquí
                 });
                 if (response.ok) {
                     const result = await response.json();
@@ -27,7 +27,21 @@ const ProductContainer = ({ _id, thumbnails, name, stock, price }) => {
                     console.error('Error al realizar like/dislike:', response.statusText);
                 }
             } else {
-                console.log('Please log in to like the product');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Debes iniciar sesión o registrarte para poder dar Likes.',
+                    showCancelButton: true,
+                    cancelButtonText: 'Registrarse',
+                    confirmButtonText: 'Iniciar sesión'
+                }).then((result) => {
+                        if (result.isConfirmed) {
+                            navigate('/login');
+                        } else if (result.dismiss === Swal.DismissReason.cancel) {
+                            navigate('/register');
+                        }
+                    }
+                );
             }
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
@@ -35,29 +49,57 @@ const ProductContainer = ({ _id, thumbnails, name, stock, price }) => {
     };
     
     const addToCart = async (_id) => {
+        if (!user) {
+            // Si el usuario no está autenticado, muestra un SweetAlert con dos botones para redirigirlo a /login o /register
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Debes iniciar sesión o registrarte para agregar un Producto al Carrito.',
+              showCancelButton: true,
+              cancelButtonText: 'Registrarse',
+              confirmButtonText: 'Iniciar sesión'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                navigate('/login');
+              } else if (result.dismiss === Swal.DismissReason.cancel) {
+                navigate('/register');
+              }
+            });
+            return;
+        }
         try {
             const response = await fetch(`http://localhost:8080/api/carts/product/${_id}`, {
                 method: 'POST',
-                credentials: 'include', // Para enviar las cookies en la solicitud
+                credentials: 'include',
             });
+
+            console.log('response: ', response)
+            const data = await response.json();
+            console.log('data: ', data)
             if (response.ok) {
-                // Producto agregado al carrito exitosamente
                 Swal.fire({
                     title: 'Producto agregado al carrito',
+                    text: '¿Desea ir al carrito o continuar comprando?',
                     icon: 'success',
                     showCancelButton: true,
                     confirmButtonText: 'Ir al carrito',
                     cancelButtonText: 'Seguir comprando',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Redirige al usuario al carrito
-                        window.location.href = '/cart';
-                    }else {
-                        window.location.href = '/juegos';
+                        navigate('/cart'); // Usa navigate para redirigir al carrito
+                    } else {
+                        navigate('/products'); // Usa navigate para redirigir a la página de juegos
                     }
-                    
                 });
-            } 
+            }
+
+            if (data.error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: data.error,
+                });
+            }
         } catch (error) {
             console.error('Error al realizar la solicitud:', error);
         }

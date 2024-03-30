@@ -377,7 +377,7 @@ const MisDatos = () => {
             {user.rol !== 'admin' && (
                 <>
                     <FormDocuments user={user} setUser={setUser} />
-                    <UploadedDocuments documents={user.documents} wantPremium={user.wantPremium} />
+                    <UploadedDocuments documents={user.documents} wantPremium={user.wantPremium} userRol={user.rol} />
                 </>
             )}
         </div>

@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import MisDatos from '../components/MisDatos';
 import AdminView from '../components/AdminView';
+import MyProducts from '../components/MProducts/MyProducts';
 
 const Profile = () => {
 
@@ -13,11 +14,14 @@ const Profile = () => {
     const [selectedButton, setSelectedButton] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
-
+    const [isPremium, setIsPremium ] = useState(false);
+ 
     useEffect(() => {
         // Verificar si el usuario tiene el rol de 'admin'
         setIsAdmin(user && user.rol === 'admin');
+        setIsPremium(user && user.rol === 'premium');
     }, [user]);
+
 
 
 
@@ -140,12 +144,14 @@ const Profile = () => {
                         <button className={selectedButton === 'mis-favoritos' ? 'selected' : 'buttom-user'} onClick={() => handleButtonClick('mis-favoritos')}><p>Mis Favoritos</p></button>
                         <button className={selectedButton === 'mis-datos' ? 'selected' : 'buttom-user'} onClick={() => handleButtonClick('mis-datos')}><p>Mis Datos</p></button>
                         {isAdmin && <button className={selectedButton === 'admin-view' ? 'selected' : 'buttom-user'} onClick={() => handleButtonClick('admin-view')}><p>Vista de Administrador</p></button>}
+                        {isPremium && <button className={selectedButton === 'my-products' ? 'selected' : 'buttom-user'} onClick={() => handleButtonClick('my-products')}><p>Mis Productos</p></button>}
                     </article>
                 </section>
                 <section className='selected-content'ref={selectedContentRef} >
                     {selectedButton === 'mis-favoritos' && <MisLikes  />}
                     {selectedButton === 'mis-datos' && <MisDatos />}
                     {selectedButton === 'admin-view' && <AdminView />}
+                    {selectedButton === 'my-products' && <MyProducts />}
                 </section> 
             </section>
         );
