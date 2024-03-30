@@ -45,7 +45,7 @@ const MyProducts = () => {
                                 <img src={`img/${product.thumbnails}`} alt={product.name} className="product-img" />
                                 {/* Agregar botones para editar y eliminar */}
                                 <a href={`/products/${product._id}/edit`} className="edit-btn">Editar</a>
-                                <button className="delete-btn" onClick={() => handleDeleteProduct(product._id)}>Eliminar</button>
+                                <button className="delete-btn" >Eliminar</button>
                             </li>
                         ))
                     ) : (
