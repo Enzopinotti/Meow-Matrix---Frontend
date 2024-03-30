@@ -185,7 +185,7 @@ const UserListContainer = () => {
                     title: 'Éxito',
                     text: 'Los usuarios inactivos han sido eliminados correctamente.',
                 });
-                const deletedUsers = await response.json()
+                await response.json()
                 // Implementar lógica para actualizar la lista de usuarios en el estado si es necesario
             } else {
                 // Si hay un error en la respuesta, muestra un mensaje de error utilizando Swal
