@@ -10,8 +10,6 @@ const CartContainer = () => {
     const { user } = useContext(AuthContext);
     const { cart, setCart, removeFromCart, removeAllFromCart, calculateTotalPrice, purchaseCart } = useContext(CartContext);
     const navigate = useNavigate(); 
-  
-
     
     
     useEffect(() => {
