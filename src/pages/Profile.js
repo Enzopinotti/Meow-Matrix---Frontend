@@ -65,7 +65,7 @@ const Profile = () => {
             formData.append('avatar', selectedFile);
 
             // Realizar una solicitud POST al servidor para cargar el archivo
-            const response = await fetch('http://localhost:8080/api/users/upload-avatar', {
+            const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/users/upload-avatar', {
                 method: 'POST',
                 credentials: 'include', // Incluir credenciales en la solicitud
                 body: formData
@@ -118,7 +118,7 @@ const Profile = () => {
         return <section className='main-profile'></section>;
     } else {
         // Agregar un timestamp al final del URL de la imagen para evitar la caché del navegador
-        const imageUrl = `http://localhost:8080${user.avatar}?${new Date().getTime()}`;
+        const imageUrl = `https://meowmatrix-backend-2v-production.up.railway.app/${user.avatar}?${new Date().getTime()}`;
 
         return (
             <section className='main-profile'>

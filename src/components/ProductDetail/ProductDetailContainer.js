@@ -14,7 +14,7 @@ const ProductDetailContainer = () => {
         // Lógica para obtener los detalles del producto con el ID obtenido
         const fetchProduct = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/products/${id}`, {
+                const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/products/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const ProductDetailContainer = () => {
             return;
         }
         try {
-            const response = await fetch(`http://localhost:8080/api/carts/product/${productId}`, {
+            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/carts/product/${productId}`, {
                 method: 'POST',
                 credentials: 'include', // Para enviar las cookies en la solicitud
             });

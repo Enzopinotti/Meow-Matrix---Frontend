@@ -29,7 +29,7 @@ const FormResetPass = ({ token }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/sessions/resetPassword', {
+      const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/sessions/resetPassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

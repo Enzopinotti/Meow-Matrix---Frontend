@@ -10,11 +10,11 @@ import { CartProvider } from './components/Contexts/CartContext';
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  console.log('hola')
   useEffect(() => {
     const getUserByToken = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/sessions/user-by-token', {
+        const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/sessions/user-by-token', {
           method: 'GET',
           credentials: 'include',
         });
@@ -22,8 +22,10 @@ function App() {
         if (response.ok === false) {
           setUser(null);
         }
+        console.log('response: ', response)
         if (response.ok) {
           const userData = await response.json();
+          console.log('userData: ', userData)
           console.log('resultApp: ', userData)
           const { user: newUser, token } = userData.payload;
           

@@ -34,7 +34,7 @@ export const CartProvider = ({ children }) => {
         setCart({ ...cart, products: updatedProducts });
 
         try {
-            const response = await fetch(`http://localhost:8080/api/carts/${cart._id}/product/${productId}`, {
+            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/carts/${cart._id}/product/${productId}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
@@ -56,7 +56,7 @@ export const CartProvider = ({ children }) => {
         setCart({ ...cart, products: [] });
 
         try {
-            const response = await fetch(`http://localhost:8080/api/carts/${cart._id}/products`, {
+            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/carts/${cart._id}/products`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
@@ -71,13 +71,15 @@ export const CartProvider = ({ children }) => {
 
     const purchaseCart = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/carts/${cart._id}/purchase`, {
+            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/carts/${cart._id}/purchase`, {
                 method: 'GET',
                 credentials: 'include',
             });
+            console.log('response de compra: ', response)
             if (response.ok) {
                 // Proceso de compra exitoso
                 const serverUrl = window.location.origin;
+                console.log('serverUrl: ', serverUrl)
                 Swal.fire({
                     icon: 'success',
                     title: 'Compra exitosa',
@@ -106,7 +108,7 @@ export const CartProvider = ({ children }) => {
 
     const getTicketDetails = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/carts/ticket`, {
+            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/carts/ticket`, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {

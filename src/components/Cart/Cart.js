@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 const Cart = ({ cart, removeFromCart, removeAllFromCart, user, calculateTotalPrice, purchaseCart}) => {
     const navigate = useNavigate();
 
-    console.log(cart);
     
 
     if (user === null) {

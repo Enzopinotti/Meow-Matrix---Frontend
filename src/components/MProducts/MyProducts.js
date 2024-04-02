@@ -9,7 +9,7 @@ const MyProducts = () => {
         // Por ejemplo:
         const fetchUserProducts = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/users/products/myProducts', {
+                const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/users/products/myProducts', {
                     method: 'GET',
                     credentials: 'include',
                 });

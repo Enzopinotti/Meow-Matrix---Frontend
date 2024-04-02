@@ -7,7 +7,7 @@ const MisLikes = () => {
 
     const handleRemoveFavorite = async (_id) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/users/like/remove/${_id}`, {
+            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/users/like/remove/${_id}`, {
                 method: 'DELETE',
                 credentials: 'include', // Esto asegura que se envíen las cookies en la solicitud
             });
@@ -27,7 +27,7 @@ const MisLikes = () => {
     useEffect(() => {
         const obtenerFavoritos = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/users/likes', {
+                const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/users/likes', {
                     method: 'GET',
                     credentials: 'include', // Esto asegura que se envíen las cookies en la solicitud
                 });

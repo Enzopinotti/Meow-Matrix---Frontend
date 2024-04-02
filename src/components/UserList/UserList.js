@@ -58,9 +58,9 @@ const UsersList = ({ users, currentPage, totalPages, pageNumbers, handlePrevPage
                             </div>
                             <div className="user-avatar" onClick={() => confirmDeleteUser(user._id)}>
                                 {user.avatar ? (
-                                    <img src={`http://localhost:8080${user.avatar}?${new Date().getTime()}`} alt="Avatar" />
+                                    <img src={`https://meowmatrix-backend-2v-production.up.railway.app/${user.avatar}?${new Date().getTime()}`} alt="Avatar" />
                                 ) : (
-                                    <img src={`http://localhost:8080/img/default2.png`} alt="Default Avatar" />
+                                    <img src={`https://meowmatrix-backend-2v-production.up.railway.app/img/default2.png`} alt="Default Avatar" />
                                 )}
                             </div>
                             <div className="user-info">
