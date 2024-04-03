@@ -118,7 +118,7 @@ const Profile = () => {
         return <section className='main-profile'></section>;
     } else {
         // Agregar un timestamp al final del URL de la imagen para evitar la caché del navegador
-        const imageUrl = `https://meowmatrix-backend-2v-production.up.railway.app/${user.avatar}?${new Date().getTime()}`;
+        const imageUrl = `https://meowmatrix-backend-2v-production.up.railway.app${user.avatar}?${new Date().getTime()}`;
 
         return (
             <section className='main-profile'>

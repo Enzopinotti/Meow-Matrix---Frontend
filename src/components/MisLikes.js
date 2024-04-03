@@ -66,7 +66,7 @@ const MisLikes = () => {
                                     <img src="./img/remove.png" alt="Remove" className="remove-img" />
                                 </button>
                             </header>
-                            <Link to={`/products/${favorito._id}`}><img src={`https://meowmatrix-backend-2v-production.up.railway.app/${favorito.thumbnails[0]}`} alt={favorito.name} className='img-like'/></Link>
+                            <Link to={`/products/${favorito._id}`}><img src={`https://meowmatrix-backend-2v-production.up.railway.app${favorito.thumbnails[0]}`} alt={favorito.name} className='img-like'/></Link>
                             <strong><p>{favorito.name}</p></strong>
                             <div className="price-info">
                                 <p className="favorite-price">${formatPrice(favorito.price)}</p>

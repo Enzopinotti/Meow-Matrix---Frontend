@@ -54,7 +54,7 @@ const UserProfileDropdown = (props) => {
     if (user.avatar === undefined) {
         user.avatar = 'https://meowmatrix-backend-2v-production.up.railway.app/img/default2.png';
     }
-    const imageUrl = `https://meowmatrix-backend-2v-production.up.railway.app/${user.avatar}`;
+    const imageUrl = `https://meowmatrix-backend-2v-production.up.railway.app${user.avatar}`;
     return (
         <div className="user-profile">
             <img src={imageUrl} alt="Perfil" className="profile-image" onClick={handleImageClick} />
