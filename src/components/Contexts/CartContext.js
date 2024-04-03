@@ -34,7 +34,7 @@ export const CartProvider = ({ children }) => {
         setCart({ ...cart, products: updatedProducts });
 
         try {
-            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/carts/${cart._id}/product/${productId}`, {
+            const response = await fetch(`http://localhost:8080/api/carts/${cart._id}/product/${productId}`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
@@ -56,7 +56,7 @@ export const CartProvider = ({ children }) => {
         setCart({ ...cart, products: [] });
 
         try {
-            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/carts/${cart._id}/products`, {
+            const response = await fetch(`http://localhost:8080/api/carts/${cart._id}/products`, {
                 method: 'DELETE',
                 credentials: 'include',
             });
@@ -71,7 +71,7 @@ export const CartProvider = ({ children }) => {
 
     const purchaseCart = async () => {
         try {
-            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/carts/${cart._id}/purchase`, {
+            const response = await fetch(`http://localhost:8080/api/carts/${cart._id}/purchase`, {
                 method: 'GET',
                 credentials: 'include',
             });
@@ -108,7 +108,7 @@ export const CartProvider = ({ children }) => {
 
     const getTicketDetails = async () => {
         try {
-            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/carts/ticket`, {
+            const response = await fetch(`http://localhost:8080/api/carts/ticket`, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {

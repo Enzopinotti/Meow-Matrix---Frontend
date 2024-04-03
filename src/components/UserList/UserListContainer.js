@@ -12,7 +12,7 @@ const UserListContainer = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/users/?page=${currentPage}`,{
+                const response = await fetch(`http://localhost:8080/api/users/?page=${currentPage}`,{
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ const UserListContainer = () => {
                 const data = await response.json();
                 console.log(data)
                 setUsers(data.payload.users.docs);
-                setTotalPages(Math.ceil(data.payload.totalDocs / 7)); // 16 es el límite por página
+                setTotalPages(data.payload.users.totalPages); 
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -54,7 +54,7 @@ const UserListContainer = () => {
 
     const handleAcceptPremiumRequest = async (userId) => {
         try {
-            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/users/premium/${userId}`, {
+            const response = await fetch(`http://localhost:8080/api/users/premium/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ const UserListContainer = () => {
     
     const handleRejectPremiumRequest = async (userId) => {
         try {
-            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/users/premium/${userId}`, {
+            const response = await fetch(`http://localhost:8080/api/users/premium/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ const UserListContainer = () => {
 
     const handleDeleteUser = async (userId) => {
         try {
-            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/users/${userId}`, {
+            const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -171,7 +171,7 @@ const UserListContainer = () => {
 
     const handleDeleteInactiveUsers = async () => {
         try {
-            const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/users/inactive', {
+            const response = await fetch('http://localhost:8080/api/users/inactive', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

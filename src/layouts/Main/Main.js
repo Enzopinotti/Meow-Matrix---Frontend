@@ -11,6 +11,8 @@ import ProductDetailContainer from "../../components/ProductDetail/ProductDetail
 import Profile from "../../pages/Profile";
 import CartContainer from "../../components/Cart/CartContainer";
 import TicketContainer from "../../components/Ticket/TicketContainer";
+import AdminProductsContainer from "../../components/AdminProducts/AdminProductsContainer";
+import AdminCategoriesContainer from "../../components/AdminCategories/AdminCategoriesContainer";
 
 const Main = () => {
     return (
@@ -22,6 +24,8 @@ const Main = () => {
             <Route path="/resetPassword/:token" element={<ResetPassword />} />
             <Route path="/products" element={<ProductListContainer />} />
             <Route path="/products/:id" element={<ProductDetailContainer />} />
+            <Route path="/realTimeProducts" element={<AdminProductsContainer />} />
+            <Route path="/realTimeCategories" element={<AdminCategoriesContainer />} />
             <Route path="/categories" element={<Counter />} />
             <Route path="/sobreNosotros" element={<Counter />} />
             <Route path="/cart" element={<CartContainer />} />

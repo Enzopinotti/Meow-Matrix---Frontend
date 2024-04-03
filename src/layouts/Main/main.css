@@ -178,12 +178,12 @@
 
 .product-list {
     list-style: none;
-    margin-left: 4rem;
-    margin-right: 4rem;
+    margin-left: 6rem;
+    margin-right: 6rem;
     padding: 0;
     padding-top: 4rem;
     display: grid;
-    grid-template-columns: repeat(3, minmax(250px, 1fr)); /* Define columnas automáticas con tamaño mínimo de 250px */
+    grid-template-columns: repeat(4, minmax(250px, 1fr)); /* Define columnas automáticas con tamaño mínimo de 250px */
     gap: 20px; /* Espacio entre elementos */
     grid-column: 2 / span 1;
     min-height: 90vh;
@@ -1724,3 +1724,223 @@ input {
 .back-to-games-button:hover {
     background-color: #0056b3; /* Cambia el color al pasar el mouse sobre el botón */
 }
+
+
+.admin-container {
+    margin: 0 auto;
+    background-image: url(/public/img/Fondo_Admin.jpg);
+    background-size: cover;
+    padding: 6rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+  }
+  .section-title {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 0.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    -ms-border-radius: 0.5rem;
+    -o-border-radius: 0.5rem;
+}
+  .form-section {
+    width: 30%;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-list-section{
+    width: 65%;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .formulario {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    -ms-border-radius: 0.5rem;
+    -o-border-radius: 0.5rem;
+}
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .formulario .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: black;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="number"],
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-group input[type="text"]:focus,
+  .form-group input[type="number"]:focus,
+  .form-group select:focus {
+    border-color: #4CAF50;
+  }
+  
+  .form-group input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f0f0; /* Color de fondo */
+    color: #333; /* Color del texto */
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-group input[type="file"]:hover {
+    border-color: #666; /* Cambio de color del borde al pasar el mouse */
+  }
+  
+  
+  #addProductButton {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #F01945;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #addProductButton:hover {
+    background-color: #D0173D;
+  }
+  
+    
+  #addCategoryButton {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #F01945;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #addCategoryButton:hover {
+    background-color: #D0173D;
+  }
+  
+
+  
+  .product-list-admin {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin: 0;
+  }
+
+  
+  
+  .product-list-admin li {
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 1.5rem;
+
+  }
+  
+  .product-list-admin h3 {
+    margin-bottom: 10px;
+    color: #333;
+    padding: 10px;
+    background-color: #f0f0f09f;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 100%;
+    text-align: center;
+  }
+  .product-image {
+    width: 11rem;
+    height: 10rem;
+  }
+  
+  .product-details {
+    padding: 10px;
+  }
+  
+  .product-details p {
+    margin: 0;
+  }
+
+  .product-list-section{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+  }
+
+  .product-list-section .botonNavegacion {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #199af0; /* Color de fondo del botón */
+    color: #fff; /* Color del texto */
+    border-radius: 5px;
+    text-decoration: none; /* Quitar subrayado del enlace */
+    transition: background-color 0.3s ease;
+    width: 30%;
+    text-align: center;
+    align-self: center;
+    margin-bottom: 2rem;
+  }
+  
+  .product-list-section .botonNavegacion:hover {
+    background-color: #156ba5; /* Cambio de color de fondo al pasar el mouse */
+  }
+  
+  .delete-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #f01945;
+    color: white;
+    font-weight: 500;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 2rem;
+    -webkit-border-radius: 0.3rem;
+    -moz-border-radius: 0.3rem;
+    -ms-border-radius: 0.3rem;
+    -o-border-radius: 0.3rem;
+}
+  
+  .delete-button:hover {
+    background-color: #d0173d;
+  }

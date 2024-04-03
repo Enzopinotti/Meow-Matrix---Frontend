@@ -32,10 +32,11 @@ const UserProfileDropdown = (props) => {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/sessions/logout', {
+            const response = await fetch('http://localhost:8080/api/sessions/logout', {
                 method: 'GET',
                 credentials: 'include', // Para enviar las cookies en la solicitud
             });
+            console.log('respuesta del logout: ',response);
             if (response.ok) {
                 // Eliminar cualquier estado de usuario almacenado localmente
                 // Redirigir al usuario a la página de inicio de sesión
@@ -53,7 +54,7 @@ const UserProfileDropdown = (props) => {
     if (user.avatar === undefined) {
         user.avatar = '/img/default2.png';
     }
-    const imageUrl = `https://meowmatrix-backend-2v-production.up.railway.app/${user.avatar}`;
+    const imageUrl = `http://localhost:8080/${user.avatar}`;
     return (
         <div className="user-profile">
             <img src={imageUrl} alt="Perfil" className="profile-image" onClick={handleImageClick} />

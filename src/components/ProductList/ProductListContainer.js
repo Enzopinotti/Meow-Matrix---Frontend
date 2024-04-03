@@ -7,7 +7,7 @@ const ProductListContainer = () => {
     const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/products?page=${currentPage}`, {
+        fetch(`http://localhost:8080/api/products?page=${currentPage}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

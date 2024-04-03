@@ -6,7 +6,7 @@ const UploadedDocuments = ({ documents, wantPremium, userRol }) => {
 
     const handlePremiumRequest = async () => {
         try {
-            const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/users/premium', {
+            const response = await fetch('http://localhost:8080/api/users/premium', {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {

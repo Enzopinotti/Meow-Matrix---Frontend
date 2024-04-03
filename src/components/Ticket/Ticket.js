@@ -14,9 +14,6 @@ class Ticket extends React.Component {
                         <p><span>ID del ticket:</span> {ticketDetails._id}</p>
                         <p><span>Fecha de compra:</span> {formatDate(new Date(ticketDetails.purchase_datetime))}</p>
                         <p><span>Monto total:</span> ${formatPrice(ticketDetails.amount)}</p>
-                        <button className="back-to-games-button" onClick={() => this.props.history.push('/products')}>
-                            Volver a Productos
-                        </button>
                     </div>
                 ) : (
                     <p className="loading-message">Cargando detalles del ticket...</p>

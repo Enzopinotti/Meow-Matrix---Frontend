@@ -27,7 +27,7 @@ const CartContainer = () => {
     
         const fetchCart = async () => {
             try {
-                const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/carts/current', {
+                const response = await fetch('http://localhost:8080/api/carts/current', {
                     method: 'GET',
                     credentials: 'include',
                 });

@@ -11,12 +11,12 @@ const ProductList = ({ products, currentPage, totalPages, handleNextPage, handle
     
     
     return (
-        <>
+        <main className='main-container'>
             <ul className='product-list'>
             {   products.map(product => <ProductContainer key={product._id} {...product} />)   }
             </ul>
             <Pagination pageNumbers={pageNumbers} currentPage={currentPage} setCurrentPage={setCurrentPage} handleNextPage={handleNextPage} handlePrevPage={handlePrevPage} totalPages={totalPages}  />
-        </>
+        </main>
        
     );
 }

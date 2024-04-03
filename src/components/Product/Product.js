@@ -22,7 +22,7 @@ const Product = ({ _id, thumbnails, name, stock, price, isProductLiked, handleFa
                 )}
             </header>
             <section className="product-info">
-                <Link to={`/products/${_id}`}><img src={`./img/products/${thumbnails}`} alt={name} className="product-img" /></Link>
+                <Link to={`/products/${_id}`}><img src={`http://localhost:8080/${thumbnails}`} alt={name} className="product-img" /></Link>
                 <span className={`stock-status ${checkStock(stock) ? '' : 'out-of-stock'}`}>{checkStock(stock) ? 'En Stock' : 'Sin Stock'}</span>
                 <h2 className="product-name">{name}</h2>
                 <div className="price-info">

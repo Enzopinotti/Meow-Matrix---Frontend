@@ -24,7 +24,7 @@ const Counter = ({ initialValue = 1, stock, productId }) => {
 
     const updateQuantity = async (newQuantity) => {
       try {
-          const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/carts/${cart._id}/products/${productId}`, {
+          const response = await fetch(`http://localhost:8080/api/carts/${cart._id}/products/${productId}`, {
               method: 'PUT',
               headers: {
                   'Content-Type': 'application/json',

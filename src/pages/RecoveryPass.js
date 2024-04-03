@@ -19,7 +19,7 @@ const RecoveryPass = () => {
     }
 
     try {
-      const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/sessions/recoveryPass', {
+      const response = await fetch('http://localhost:8080/api/sessions/recoveryPass', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

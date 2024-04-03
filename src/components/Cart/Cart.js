@@ -63,7 +63,7 @@ const Cart = ({ cart, removeFromCart, removeAllFromCart, user, calculateTotalPri
                             {cart.products.map((item) => (
                                 <li key={item.product._id} className="cart-item">
                                     <section>
-                                        <img src={`img/products/${item.product.thumbnails[0]}`} alt={item.product.name} className="product-img" />
+                                        <img src={`http://localhost:8080/${item.product.thumbnails[0]}`} alt={item.product.name} className="product-img" />
                                     </section>
                                     <section>
                                         <p className="product-name">{item.product.name}</p>

@@ -20,7 +20,7 @@ const FormDocuments = ({user, setUser}) => {
             formFileData.append('address', proofOfAddress);
             formFileData.append('bankStatement', bankStatement);
 
-            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/users/${user._id}/documents`, {
+            const response = await fetch(`http://localhost:8080/api/users/${user._id}/documents`, {
                 method: 'POST',
                 credentials: 'include',
                 body: formFileData,
