@@ -1,10 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect, useCallback } from 'react';
 import AdminProducts from './AdminProducts';
-import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 
 const AdminProductsContainer = () => {
-
     const [productName, setProductName] = useState('');
     const [productDescription, setProductDescription] = useState('');
     const [productPrice, setProductPrice] = useState('');
@@ -17,35 +15,8 @@ const AdminProductsContainer = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
 
-    useEffect(() => {
-        // Aquí puedes realizar una solicitud para obtener las categorías disponibles
-        fetchCategories();
-        // También puedes cargar los productos en tiempo real
-        fetchRealTimeProducts();
-    }, [currentPage]);
-
-    const fetchCategories = async () => {
+    const fetchRealTimeProducts = useCallback(async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/categories');
-            if (response.ok) {
-                const data = await response.json();
-                setCategories(data.payload.docs);
-            } else {
-                throw new Error('Error al obtener las categorías');
-            }
-        } catch (error) {
-            // Manejar el error con SweetAlert u otra biblioteca de notificación
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Hubo un problema al cargar las categorías',
-            });
-        }
-    };
-
-    const fetchRealTimeProducts = async () => {
-        try {
-            
             const response = await fetch(`http://localhost:8080/api/products?page=${currentPage}`);
             if (response.ok) {
                 const data = await response.json();
@@ -56,18 +27,43 @@ const AdminProductsContainer = () => {
             }
         } catch (error) {
             console.error('Error:', error);
-            // Manejar el error con SweetAlert u otra biblioteca de notificación
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Hubo un problema al cargar los productos en tiempo real',
             });
         }
-    };
+    }, [currentPage]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/api/categories');
+                if (response.ok) {
+                    const data = await response.json();
+                    setCategories(data.payload.docs);
+                } else {
+                    throw new Error('Error al obtener las categorías');
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Hubo un problema al cargar las categorías',
+                });
+            }
+        };
+
+        // Aquí puedes realizar una solicitud para obtener las categorías disponibles
+        fetchCategories();
+        // También puedes cargar los productos en tiempo real
+        fetchRealTimeProducts();
+    }, [currentPage, fetchRealTimeProducts]);
 
     const handleFileChange = (event) => {
         setProductImage(event.target.files[0]);
     };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -161,7 +157,6 @@ const AdminProductsContainer = () => {
             });
         }
     };
-
 
   return (
     <AdminProducts 

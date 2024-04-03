@@ -9,30 +9,31 @@ const AdminCategoriesContainer = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                console.log('currentPage: ', currentPage)
+                const response = await fetch(`http://localhost:8080/api/categories?page=${currentPage}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data);
+                    setCategories(data.payload.docs);
+                    setTotalPages(data.payload.totalPages);
+                } else {
+                    throw new Error('Error al obtener las categorías');
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Hubo un problema al cargar las categorías',
+                });
+            }
+        };
         fetchCategories();
     }, [currentPage]);
 
-    const fetchCategories = async () => {
-        try {
-            console.log('currentPage: ', currentPage)
-            const response = await fetch(`http://localhost:8080/api/categories?page=${currentPage}`);
-            
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data);
-                setCategories(data.payload.docs);
-                setTotalPages(data.payload.totalPages);
-            } else {
-                throw new Error('Error al obtener las categorías');
-            }
-        } catch (error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Hubo un problema al cargar las categorías',
-            });
-        }
-    };
+    
 
     const handleSubmit = async (event) => {
         event.preventDefault();
