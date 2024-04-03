@@ -17,7 +17,7 @@ const AdminProductsContainer = () => {
 
     const fetchRealTimeProducts = useCallback(async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/products?page=${currentPage}`);
+            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/products?page=${currentPage}`);
             if (response.ok) {
                 const data = await response.json();
                 setProducts(data.payload.products.docs);
@@ -38,7 +38,7 @@ const AdminProductsContainer = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/categories');
+                const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/categories');
                 if (response.ok) {
                     const data = await response.json();
                     setCategories(data.payload.docs);
@@ -76,7 +76,7 @@ const AdminProductsContainer = () => {
             formData.append('category', productCategory);
             formData.append('productImage', productImage); // Asegúrate de que el nombre del campo coincida con el que espera el servidor
     
-            const response = await fetch('http://localhost:8080/api/products', {
+            const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/products', {
                 method: 'POST',
                 body: formData,
                 credentials: 'include',
@@ -132,7 +132,7 @@ const AdminProductsContainer = () => {
 
     const handleDeleteProduct = async (productId) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/products/${productId}`, {
+            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/products/${productId}`, {
                 method: 'DELETE',
             });
             if (response.ok) {

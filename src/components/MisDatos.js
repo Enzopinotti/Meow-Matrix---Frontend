@@ -45,7 +45,7 @@ const MisDatos = () => {
 
     const checkEmailAvailability = async (email) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/users/email/${email}`);
+            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/users/email/${email}`);
             const data = await response.json();
             console.log('trae usuario: ', data)
             return data;
@@ -83,7 +83,7 @@ const MisDatos = () => {
             if (Object.keys(modifiedData).length > 0 || includePassword) {
                 console.log('Datos modificados que se envían: ', modifiedData);
     
-                const response = await fetch(`http://localhost:8080/api/users/${user._id}`, {
+                const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/users/${user._id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -170,7 +170,7 @@ const MisDatos = () => {
 
     // Función para verificar si la contraseña ingresada por el usuario coincide con la del usuario actual
     const verifyPassword = async (passwordEntered) => {
-        const response = await fetch('http://localhost:8080/api/sessions/verify-password', {
+        const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/sessions/verify-password', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

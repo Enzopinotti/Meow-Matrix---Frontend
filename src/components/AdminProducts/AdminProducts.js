@@ -32,7 +32,7 @@ const AdminProducts = ( {handleSubmit, productName, setProductName, productDescr
               
             <li key={product._id} data-product-id={product._id}>
               <h3>{product.name}</h3>
-              <img src={`http://localhost:8080/${product.thumbnails[0]}`} alt={product.name} className="product-image" />
+              <img src={`https://meowmatrix-backend-2v-production.up.railway.app/${product.thumbnails[0]}`} alt={product.name} className="product-image" />
               <p>{product.description}</p>
               <p><strong>Precio:</strong> ${product.price}</p>
               <p><strong>Stock:</strong> {product.stock} unidades</p>

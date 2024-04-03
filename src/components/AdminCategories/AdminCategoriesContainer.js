@@ -12,7 +12,7 @@ const AdminCategoriesContainer = () => {
     const fetchCategories = useCallback(async () => {
         try {
             console.log('currentPage: ', currentPage);
-            const response = await fetch(`http://localhost:8080/api/categories?page=${currentPage}`);
+            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/categories?page=${currentPage}`);
             
             if (response.ok) {
                 const data = await response.json();
@@ -44,7 +44,7 @@ const AdminCategoriesContainer = () => {
             };
            
             const jsonData = JSON.stringify(data);
-            const response = await fetch('http://localhost:8080/api/categories', {
+            const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/categories', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -77,7 +77,7 @@ const AdminCategoriesContainer = () => {
     const handleDeleteCategory = async (categoryId) => {
         try {
             console.log('id que envío: ', categoryId)
-            const response = await fetch(`http://localhost:8080/api/categories/${categoryId}`, {
+            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/categories/${categoryId}`, {
                 method: 'DELETE',
             });
             console.log(await response.json())

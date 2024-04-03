@@ -12,7 +12,7 @@ const ProductContainer = ({ _id, thumbnails, name, stock, price }) => {
     const handleFavoriteClick = async () => {
         try {
             if (user) {
-                const response = await fetch(`http://localhost:8080/api/users/like/${_id}`, {
+                const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/users/like/${_id}`, {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
@@ -68,7 +68,7 @@ const ProductContainer = ({ _id, thumbnails, name, stock, price }) => {
             return;
         }
         try {
-            const response = await fetch(`http://localhost:8080/api/carts/product/${_id}`, {
+            const response = await fetch(`https://meowmatrix-backend-2v-production.up.railway.app/api/carts/product/${_id}`, {
                 method: 'POST',
                 credentials: 'include',
             });

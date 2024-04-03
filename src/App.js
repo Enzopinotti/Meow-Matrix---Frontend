@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     const getUserByToken = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/sessions/user-by-token', {
+        const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/sessions/user-by-token', {
           method: 'GET',
           credentials: 'include',
         });

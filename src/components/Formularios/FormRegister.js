@@ -30,7 +30,7 @@ const FormRegister = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/sessions/register', {
+      const response = await fetch('https://meowmatrix-backend-2v-production.up.railway.app/api/sessions/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
