@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import Counter from "../../components/Counter";
 import ProductListContainer from "../../components/ProductList/ProductListContainer";
 import Home from "../../pages/Home";
 import Login from "../../pages/Login";
