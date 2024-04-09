@@ -26,8 +26,6 @@ const Main = () => {
             <Route path="/products/:id" element={<ProductDetailContainer />} />
             <Route path="/realTimeProducts" element={<AdminProductsContainer />} />
             <Route path="/realTimeCategories" element={<AdminCategoriesContainer />} />
-            <Route path="/categories" element={<Counter />} />
-            <Route path="/sobreNosotros" element={<Counter />} />
             <Route path="/cart" element={<CartContainer />} />
             <Route path="/ticket" element={<TicketContainer />} />
             <Route path="/profile" element={<Profile />} />
