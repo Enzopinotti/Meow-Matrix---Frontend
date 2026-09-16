@@ -121,8 +121,15 @@ describe("B5 PrivateFilesPage", () => {
     const invalidAvatar = new File(["%PDF"], "avatar.pdf", {
       type: "application/pdf",
     });
+    const fileList = {
+      0: invalidAvatar,
+      length: 1,
+      item(index: number) {
+        return index === 0 ? invalidAvatar : null;
+      },
+    } as unknown as FileList;
     fireEvent.change(inputs[0] as HTMLInputElement, {
-      target: { files: [invalidAvatar] },
+      target: { files: fileList },
     });
 
     const uploadButtons = screen.getAllByRole("button", {
