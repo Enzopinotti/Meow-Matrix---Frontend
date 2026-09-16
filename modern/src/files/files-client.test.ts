@@ -50,11 +50,8 @@ describe("B5 private files API client", () => {
   });
 
   it("downloads private bytes as an ephemeral Blob without converting them to JSON/base64", async () => {
-    const payload = new Blob([new Uint8Array([1, 2, 3])], {
-      type: "image/png",
-    });
     const fetchMock = vi.fn().mockResolvedValue(
-      new Response(payload, {
+      new Response(new Uint8Array([1, 2, 3]), {
         status: 200,
         headers: { "Content-Type": "image/png" },
       }),
