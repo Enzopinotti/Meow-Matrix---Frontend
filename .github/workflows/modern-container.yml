@@ -3,24 +3,14 @@ name: Meow modern frontend container
 on:
   pull_request:
     paths:
-      - "modern/Dockerfile"
-      - "modern/.dockerignore"
-      - "modern/container/**"
-      - "modern/package.json"
-      - "modern/package-lock.json"
-      - "modern/src/**"
+      - "modern/**"
       - ".github/workflows/modern-container.yml"
       - ".github/workflows/modern-quality.yml"
   push:
     branches:
       - main
     paths:
-      - "modern/Dockerfile"
-      - "modern/.dockerignore"
-      - "modern/container/**"
-      - "modern/package.json"
-      - "modern/package-lock.json"
-      - "modern/src/**"
+      - "modern/**"
       - ".github/workflows/modern-container.yml"
       - ".github/workflows/modern-quality.yml"
 
