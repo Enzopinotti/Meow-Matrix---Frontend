@@ -56,7 +56,9 @@ export function AuthProvider({
       }
       setUser(null);
       setStatus("error");
-      setError(cause instanceof Error ? cause.message : "Authentication unavailable");
+      setError(
+        cause instanceof Error ? cause.message : "Authentication unavailable",
+      );
     }
   }, [authApi]);
 

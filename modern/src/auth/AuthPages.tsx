@@ -5,7 +5,8 @@ import { useAuth } from "./AuthContext";
 
 function authMessage(error: unknown): string {
   if (error instanceof ApiResponseError) {
-    if (error.status === 401) return "El email o la contraseña no son correctos.";
+    if (error.status === 401)
+      return "El email o la contraseña no son correctos.";
     if (error.code === "EMAIL_ALREADY_REGISTERED") {
       return "Ya existe una cuenta para ese email.";
     }
@@ -30,7 +31,15 @@ function authMessage(error: unknown): string {
     : "No pudimos completar la operación.";
 }
 
-function AuthCard({ title, intro, children }: { title: string; intro: string; children: ReactNode }) {
+function AuthCard({
+  title,
+  intro,
+  children,
+}: {
+  title: string;
+  intro: string;
+  children: ReactNode;
+}) {
   return (
     <section className="auth-card" aria-labelledby="auth-title">
       <p className="eyebrow">Cuenta Meow Matrix</p>
@@ -71,7 +80,13 @@ function Field({
   );
 }
 
-function SubmitState({ pending, error }: { pending: boolean; error: string | null }) {
+function SubmitState({
+  pending,
+  error,
+}: {
+  pending: boolean;
+  error: string | null;
+}) {
   return (
     <>
       {error ? (
@@ -93,7 +108,11 @@ export function LoginPage() {
   const [error, setError] = useState<string | null>(null);
 
   if (auth.status === "loading") {
-    return <AuthCard title="Ingresar" intro="Comprobando tu sesión…"><p role="status">Cargando…</p></AuthCard>;
+    return (
+      <AuthCard title="Ingresar" intro="Comprobando tu sesión…">
+        <p role="status">Cargando…</p>
+      </AuthCard>
+    );
   }
 
   if (auth.status === "authenticated" && auth.user) {
@@ -103,8 +122,14 @@ export function LoginPage() {
         intro="Tu sesión está controlada por el backend mediante una cookie HttpOnly."
       >
         <dl className="account-summary">
-          <div><dt>Email</dt><dd>{auth.user.email}</dd></div>
-          <div><dt>Rol</dt><dd>{auth.user.role}</dd></div>
+          <div>
+            <dt>Email</dt>
+            <dd>{auth.user.email}</dd>
+          </div>
+          <div>
+            <dt>Rol</dt>
+            <dd>{auth.user.role}</dd>
+          </div>
         </dl>
         <button
           className="secondary-action"
@@ -142,12 +167,31 @@ export function LoginPage() {
     >
       {auth.status === "error" && auth.error ? (
         <p className="auth-feedback auth-feedback--error" role="alert">
-          {auth.error} <button type="button" className="link-button" onClick={() => void auth.refresh()}>Reintentar</button>
+          {auth.error}{" "}
+          <button
+            type="button"
+            className="link-button"
+            onClick={() => void auth.refresh()}
+          >
+            Reintentar
+          </button>
         </p>
       ) : null}
       <form className="auth-form" onSubmit={submit}>
-        <Field label="Email" name="email" type="email" autoComplete="email" maxLength={254} />
-        <Field label="Contraseña" name="password" type="password" autoComplete="current-password" maxLength={4096} />
+        <Field
+          label="Email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          maxLength={254}
+        />
+        <Field
+          label="Contraseña"
+          name="password"
+          type="password"
+          autoComplete="current-password"
+          maxLength={4096}
+        />
         <SubmitState pending={pending} error={error} />
       </form>
       <p className="auth-links">
@@ -200,21 +244,57 @@ export function RegisterPage() {
     >
       {created ? (
         <p className="auth-feedback auth-feedback--success" role="status">
-          Cuenta creada para {created}. <Link to="/login">Ya podés ingresar.</Link>
+          Cuenta creada para {created}.{" "}
+          <Link to="/login">Ya podés ingresar.</Link>
         </p>
       ) : null}
       <form className="auth-form" onSubmit={submit}>
         <div className="auth-grid">
-          <Field label="Nombre" name="name" autoComplete="given-name" maxLength={80} />
-          <Field label="Apellido" name="lastName" autoComplete="family-name" maxLength={80} />
+          <Field
+            label="Nombre"
+            name="name"
+            autoComplete="given-name"
+            maxLength={80}
+          />
+          <Field
+            label="Apellido"
+            name="lastName"
+            autoComplete="family-name"
+            maxLength={80}
+          />
         </div>
-        <Field label="Email" name="email" type="email" autoComplete="email" maxLength={254} />
-        <Field label="Contraseña" name="password" type="password" autoComplete="new-password" minLength={12} maxLength={128} />
-        <Field label="Repetir contraseña" name="passwordConfirmation" type="password" autoComplete="new-password" minLength={12} maxLength={128} />
-        <p className="field-hint">Usá entre 12 y 128 caracteres. No reutilices una contraseña de otro servicio.</p>
+        <Field
+          label="Email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          maxLength={254}
+        />
+        <Field
+          label="Contraseña"
+          name="password"
+          type="password"
+          autoComplete="new-password"
+          minLength={12}
+          maxLength={128}
+        />
+        <Field
+          label="Repetir contraseña"
+          name="passwordConfirmation"
+          type="password"
+          autoComplete="new-password"
+          minLength={12}
+          maxLength={128}
+        />
+        <p className="field-hint">
+          Usá entre 12 y 128 caracteres. No reutilices una contraseña de otro
+          servicio.
+        </p>
         <SubmitState pending={pending} error={error} />
       </form>
-      <p className="auth-links"><Link to="/login">Ya tengo cuenta</Link></p>
+      <p className="auth-links">
+        <Link to="/login">Ya tengo cuenta</Link>
+      </p>
     </AuthCard>
   );
 }
@@ -247,14 +327,23 @@ export function RecoveryPage() {
     >
       {accepted ? (
         <p className="auth-feedback auth-feedback--success" role="status">
-          Si existe una cuenta para ese email, vas a recibir un enlace de recuperación.
+          Si existe una cuenta para ese email, vas a recibir un enlace de
+          recuperación.
         </p>
       ) : null}
       <form className="auth-form" onSubmit={submit}>
-        <Field label="Email" name="email" type="email" autoComplete="email" maxLength={254} />
+        <Field
+          label="Email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          maxLength={254}
+        />
         <SubmitState pending={pending} error={error} />
       </form>
-      <p className="auth-links"><Link to="/login">Volver a ingresar</Link></p>
+      <p className="auth-links">
+        <Link to="/login">Volver a ingresar</Link>
+      </p>
     </AuthCard>
   );
 }
@@ -307,8 +396,22 @@ export function ResetPasswordPage() {
       intro="Al confirmar el cambio, todas las sesiones anteriores de la cuenta se revocan."
     >
       <form className="auth-form" onSubmit={submit}>
-        <Field label="Nueva contraseña" name="password" type="password" autoComplete="new-password" minLength={12} maxLength={128} />
-        <Field label="Repetir contraseña" name="passwordConfirmation" type="password" autoComplete="new-password" minLength={12} maxLength={128} />
+        <Field
+          label="Nueva contraseña"
+          name="password"
+          type="password"
+          autoComplete="new-password"
+          minLength={12}
+          maxLength={128}
+        />
+        <Field
+          label="Repetir contraseña"
+          name="passwordConfirmation"
+          type="password"
+          autoComplete="new-password"
+          minLength={12}
+          maxLength={128}
+        />
         <SubmitState pending={pending} error={error} />
       </form>
     </AuthCard>

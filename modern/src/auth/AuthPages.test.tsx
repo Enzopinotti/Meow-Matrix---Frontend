@@ -1,4 +1,10 @@
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ApiResponseError } from "../api/client";
@@ -94,7 +100,9 @@ describe("B3 auth pages", () => {
         "Si existe una cuenta para ese email, vas a recibir un enlace de recuperación.",
       ),
     ).toBeTruthy();
-    expect(api.requestPasswordReset).toHaveBeenCalledWith("unknown@example.com");
+    expect(api.requestPasswordReset).toHaveBeenCalledWith(
+      "unknown@example.com",
+    );
   });
 
   it("blocks mismatched registration passwords before contacting the API", async () => {

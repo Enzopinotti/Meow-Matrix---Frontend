@@ -118,9 +118,8 @@ export function createApiClient(
     },
 
     async currentUser(): Promise<UserDto> {
-      const response = await request<SuccessEnvelope<UserDto>>(
-        "/api/v1/auth/me",
-      );
+      const response =
+        await request<SuccessEnvelope<UserDto>>("/api/v1/auth/me");
       return response.data;
     },
 

@@ -7,7 +7,11 @@ import { AuthProvider } from "./auth/AuthContext";
 
 const anonymousAuthApi = {
   async currentUser() {
-    throw new ApiResponseError(401, "SESSION_INVALID", "Authentication required");
+    throw new ApiResponseError(
+      401,
+      "SESSION_INVALID",
+      "Authentication required",
+    );
   },
   async login() {
     throw new Error("unused");
