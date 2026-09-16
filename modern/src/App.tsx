@@ -1,8 +1,23 @@
 import { Link, Route, Routes } from "react-router-dom";
 import { resolveApiOrigin } from "./api/config";
+import {
+  LoginPage,
+  RecoveryPage,
+  RegisterPage,
+  ResetPasswordPage,
+} from "./auth/AuthPages";
+import { useAuth } from "./auth/AuthContext";
 import { StatusPage } from "./components/StatusPage";
 
 const apiOrigin = resolveApiOrigin(import.meta.env.VITE_API_ORIGIN);
+
+function SessionNav() {
+  const { status, user } = useAuth();
+  if (status === "authenticated" && user) {
+    return <Link to="/login">{user.name}</Link>;
+  }
+  return <Link to="/login">Ingresar</Link>;
+}
 
 export function App() {
   return (
@@ -14,7 +29,7 @@ export function App() {
         <nav aria-label="Navegación principal">
           <Link to="/products">Productos</Link>
           <Link to="/cart">Carrito</Link>
-          <Link to="/login">Ingresar</Link>
+          <SessionNav />
         </nav>
       </header>
 
@@ -25,7 +40,7 @@ export function App() {
             element={
               <StatusPage
                 title="Meow Matrix 2026"
-                description="La nueva autoridad frontend ya está separada del CRA histórico. Los flujos se migran sólo cuando su contrato full-stack queda probado."
+                description="La autoridad frontend 2026 ya cuenta con contrato API tipado y sesión backend-owned. Los flujos comerciales se incorporan sólo cuando su consistencia full-stack queda probada."
                 apiOrigin={apiOrigin}
               />
             }
@@ -35,7 +50,7 @@ export function App() {
             element={
               <StatusPage
                 title="Catálogo en reconstrucción"
-                description="La UI histórica existe, pero el catálogo 2026 se conectará después de fijar schemas Product/Category y estados de error/loading."
+                description="Product y Category ya tienen contrato v1; la siguiente iteración conectará persistencia de catálogo y estados visuales reales sin inventar stock."
                 apiOrigin={apiOrigin}
               />
             }
@@ -45,31 +60,15 @@ export function App() {
             element={
               <StatusPage
                 title="Carrito en reconstrucción"
-                description="No se simulan precios ni checkout: el carrito moderno esperará la autoridad server-side de producto, stock y totales."
+                description="B4 hará server-authoritative el carrito, stock, totales y creación de órdenes antes de habilitar checkout."
                 apiOrigin={apiOrigin}
               />
             }
           />
-          <Route
-            path="/login"
-            element={
-              <StatusPage
-                title="Auth en reconstrucción"
-                description="La sesión 2026 será backend-owned con cookie HttpOnly. Este frontend no escribe ni persiste tokens de autenticación."
-                apiOrigin={apiOrigin}
-              />
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <StatusPage
-                title="Registro en reconstrucción"
-                description="El formulario se habilitará cuando el DTO y las reglas de registro estén compartidos con la API."
-                apiOrigin={apiOrigin}
-              />
-            }
-          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/recovery" element={<RecoveryPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route
             path="*"
             element={
