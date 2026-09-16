@@ -2,11 +2,16 @@ import { resolveApiOrigin } from "./config";
 import {
   isErrorEnvelope,
   type ApiErrorDetail,
+  type AuthSessionDto,
   type CategoryDto,
+  type LoginRequest,
+  type PasswordResetConfirmRequest,
   type ProductDto,
   type ProductListDto,
   type ProductListParams,
+  type RegisterRequest,
   type SuccessEnvelope,
+  type UserDto,
 } from "./contracts";
 
 export class ApiConfigurationError extends Error {}
@@ -50,6 +55,14 @@ function productListSearch(params: ProductListParams): string {
   return value.length === 0 ? "" : `?${value}`;
 }
 
+function jsonRequest(body: unknown): RequestInit {
+  return {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  };
+}
+
 export function createApiClient(
   origin = resolveApiOrigin(import.meta.env.VITE_API_ORIGIN),
 ) {
@@ -87,6 +100,51 @@ export function createApiClient(
     return body as T;
   }
 
+  const auth = {
+    async register(input: RegisterRequest): Promise<UserDto> {
+      const response = await request<SuccessEnvelope<UserDto>>(
+        "/api/v1/auth/register",
+        jsonRequest(input),
+      );
+      return response.data;
+    },
+
+    async login(input: LoginRequest): Promise<AuthSessionDto> {
+      const response = await request<SuccessEnvelope<AuthSessionDto>>(
+        "/api/v1/auth/login",
+        jsonRequest(input),
+      );
+      return response.data;
+    },
+
+    async currentUser(): Promise<UserDto> {
+      const response = await request<SuccessEnvelope<UserDto>>(
+        "/api/v1/auth/me",
+      );
+      return response.data;
+    },
+
+    async logout(): Promise<void> {
+      await request<null>("/api/v1/auth/logout", { method: "POST" });
+    },
+
+    async requestPasswordReset(email: string): Promise<void> {
+      await request<SuccessEnvelope<{ accepted: true }>>(
+        "/api/v1/auth/password-reset/request",
+        jsonRequest({ email }),
+      );
+    },
+
+    async confirmPasswordReset(
+      input: PasswordResetConfirmRequest,
+    ): Promise<void> {
+      await request<null>(
+        "/api/v1/auth/password-reset/confirm",
+        jsonRequest(input),
+      );
+    },
+  };
+
   const catalog = {
     async listProducts(
       params: ProductListParams = {},
@@ -120,7 +178,7 @@ export function createApiClient(
     },
   };
 
-  return { request, catalog };
+  return { request, auth, catalog };
 }
 
 export const apiClient = createApiClient();
