@@ -67,6 +67,16 @@ jobs:
             exit 1
           fi
 
+      - name: Verify private-file browser boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if grep -R -n -E 'storageKey|PRIVATE_STORAGE_ROOT|readAsDataURL|indexedDB|caches\.open' src/files src/api/contracts.ts src/api/client.ts --include='*.ts' --include='*.tsx'; then
+            echo "Private-file implementation exposed an internal storage primitive or browser persistence path."
+            exit 1
+          fi
+
       - name: Verify artifact budget
         shell: bash
         run: |

@@ -162,6 +162,32 @@ export type OrderListParams = {
   offset?: number;
 };
 
+export const privateFilePurposes = [
+  "avatar",
+  "premium-identification",
+  "premium-address",
+  "premium-bank-statement",
+] as const;
+
+export type PrivateFilePurpose = (typeof privateFilePurposes)[number];
+export type PrivateFileMediaType =
+  "image/jpeg" | "image/png" | "image/webp" | "application/pdf";
+
+export type PrivateFileDto = {
+  id: string;
+  ownerId: string;
+  purpose: PrivateFilePurpose;
+  originalName: string;
+  mediaType: PrivateFileMediaType;
+  bytes: number;
+  sha256: string;
+  createdAt: string;
+};
+
+export type PrivateFileListDto = {
+  items: readonly PrivateFileDto[];
+};
+
 export function isErrorEnvelope(value: unknown): value is ErrorEnvelope {
   if (typeof value !== "object" || value === null || !("error" in value)) {
     return false;
