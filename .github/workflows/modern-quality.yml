@@ -1,0 +1,64 @@
+name: Meow modern frontend quality
+
+on:
+  pull_request:
+    paths:
+      - "modern/**"
+      - "docs/modernization-2026/**"
+      - ".nvmrc"
+      - "README.md"
+      - ".github/workflows/modern-quality.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "modern/**"
+      - "docs/modernization-2026/**"
+      - ".nvmrc"
+      - "README.md"
+      - ".github/workflows/modern-quality.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: modern
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: modern/package-lock.json
+
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Run maintained quality contract
+        run: npm run check
+
+      - name: Verify client auth boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -R -n -E 'document\.cookie|localStorage|sessionStorage' src --include='*.ts' --include='*.tsx'; then
+            echo "Browser-owned credential/storage primitive detected in maintained frontend."
+            exit 1
+          fi
+
+      - name: Verify artifact budget
+        shell: bash
+        run: |
+          set -euo pipefail
+          size_kb="$(du -sk dist | cut -f1)"
+          echo "modern dist size: ${size_kb} KiB"
+          test "$size_kb" -lt 2048
