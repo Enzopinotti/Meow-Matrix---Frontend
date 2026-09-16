@@ -44,7 +44,7 @@ describe("B5 private file policies", () => {
           size: 2 * 1024 * 1024 + 1,
         }),
       ),
-    ).toMatch(/2 MiB/i);
+    ).toMatch(/supera el límite de 2\.0 MiB/i);
   });
 
   it("rejects declared media types and extensions outside the purpose allow-list", () => {
