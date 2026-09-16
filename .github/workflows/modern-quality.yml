@@ -8,6 +8,7 @@ on:
       - ".nvmrc"
       - "README.md"
       - ".github/workflows/modern-quality.yml"
+      - ".github/workflows/modern-container.yml"
   push:
     branches:
       - main
@@ -17,6 +18,7 @@ on:
       - ".nvmrc"
       - "README.md"
       - ".github/workflows/modern-quality.yml"
+      - ".github/workflows/modern-container.yml"
 
 permissions:
   contents: read

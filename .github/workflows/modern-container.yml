@@ -1,0 +1,87 @@
+name: Meow modern frontend container
+
+on:
+  pull_request:
+    paths:
+      - "modern/**"
+      - ".github/workflows/modern-container.yml"
+      - ".github/workflows/modern-quality.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "modern/**"
+      - ".github/workflows/modern-container.yml"
+      - ".github/workflows/modern-quality.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  container:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Build maintained image
+        run: |
+          docker build \
+            --file modern/Dockerfile \
+            --build-arg VITE_API_ORIGIN=http://127.0.0.1:8080 \
+            --tag meow-matrix-web:b6 \
+            modern
+
+      - name: Verify image runtime contract
+        shell: bash
+        run: |
+          set -euxo pipefail
+
+          configured_user="$(docker image inspect meow-matrix-web:b6 --format '{{.Config.User}}')"
+          test -n "$configured_user"
+          test "$configured_user" != "0"
+          test "$configured_user" != "root"
+
+          container_id="$(docker run -d \
+            --read-only \
+            --cap-drop=ALL \
+            --security-opt=no-new-privileges:true \
+            --publish 127.0.0.1:4173:8080 \
+            meow-matrix-web:b6)"
+          trap 'docker rm -f "$container_id" >/dev/null 2>&1 || true' EXIT
+
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4173/healthz >/dev/null; then
+              break
+            fi
+            if [ "$attempt" -eq 30 ]; then
+              docker logs "$container_id"
+              exit 1
+            fi
+            sleep 1
+          done
+
+          test "$(docker exec "$container_id" id -u)" != "0"
+
+          root_html="$(curl --fail --silent http://127.0.0.1:4173/)"
+          printf '%s\n' "$root_html" | grep -q '<div id="root"></div>'
+          files_html="$(curl --fail --silent http://127.0.0.1:4173/files)"
+          printf '%s\n' "$files_html" | grep -q '<div id="root"></div>'
+
+          headers="$(curl --fail --silent --head http://127.0.0.1:4173/files | tr -d '\r')"
+          printf '%s\n' "$headers"
+          printf '%s\n' "$headers" | grep -qi '^content-security-policy:'
+          printf '%s\n' "$headers" | grep -qi '^x-content-type-options: nosniff$'
+          printf '%s\n' "$headers" | grep -qi '^x-frame-options: DENY$'
+          printf '%s\n' "$headers" | grep -qi '^referrer-policy: no-referrer$'
+          printf '%s\n' "$headers" | grep -qi '^cache-control: no-store$'
+
+          health="$(curl --fail --silent http://127.0.0.1:4173/healthz)"
+          test "$health" = '{"status":"ok"}'
+
+          first_asset="$(printf '%s\n' "$root_html" | grep -oE '/assets/[^" ]+\.js' | head -n1)"
+          test -n "$first_asset"
+          asset_headers="$(curl --fail --silent --head "http://127.0.0.1:4173${first_asset}" | tr -d '\r')"
+          printf '%s\n' "$asset_headers"
+          printf '%s\n' "$asset_headers" | grep -qi '^cache-control: public, max-age=31536000, immutable$'
