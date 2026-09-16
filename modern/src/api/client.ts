@@ -88,7 +88,9 @@ export function createApiClient(
   }
 
   const catalog = {
-    async listProducts(params: ProductListParams = {}): Promise<ProductListDto> {
+    async listProducts(
+      params: ProductListParams = {},
+    ): Promise<ProductListDto> {
       const response = await request<SuccessEnvelope<ProductListDto>>(
         `/api/v1/products${productListSearch(params)}`,
       );
@@ -103,9 +105,10 @@ export function createApiClient(
     },
 
     async listCategories(): Promise<readonly CategoryDto[]> {
-      const response = await request<SuccessEnvelope<readonly CategoryDto[]>>(
-        "/api/v1/categories",
-      );
+      const response =
+        await request<SuccessEnvelope<readonly CategoryDto[]>>(
+          "/api/v1/categories",
+        );
       return response.data;
     },
 
