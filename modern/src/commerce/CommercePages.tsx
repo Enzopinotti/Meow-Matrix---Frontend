@@ -30,7 +30,10 @@ function LoginRequired({ action }: { action: string }) {
   return (
     <section className="panel commerce-empty">
       <h1>Necesitás iniciar sesión</h1>
-      <p>{action} usa la sesión segura del backend y no acepta un usuario elegido desde el navegador.</p>
+      <p>
+        {action} usa la sesión segura del backend y no acepta un usuario elegido
+        desde el navegador.
+      </p>
       <Link className="button-link" to="/login">
         Ingresar
       </Link>
@@ -73,18 +76,28 @@ function ProductCard({ product }: { product: ProductDto }) {
         {product.description ? <p>{product.description}</p> : null}
         <div className="product-card__meta">
           <strong>{money.format(product.price)}</strong>
-          <span>{product.stock > 0 ? `${product.stock} disponibles` : "Sin stock"}</span>
+          <span>
+            {product.stock > 0 ? `${product.stock} disponibles` : "Sin stock"}
+          </span>
         </div>
         {status === "authenticated" ? (
           <button disabled={!canBuy || busy} onClick={() => void addToCart()}>
-            {busy ? "Agregando…" : canBuy ? "Agregar al carrito" : "No disponible"}
+            {busy
+              ? "Agregando…"
+              : canBuy
+                ? "Agregar al carrito"
+                : "No disponible"}
           </button>
         ) : (
           <Link className="button-link" to="/login">
             Ingresar para comprar
           </Link>
         )}
-        {notice ? <p className="form-message" role="status">{notice}</p> : null}
+        {notice ? (
+          <p className="form-message" role="status">
+            {notice}
+          </p>
+        ) : null}
       </div>
     </article>
   );
@@ -93,7 +106,10 @@ function ProductCard({ product }: { product: ProductDto }) {
 export function CatalogPage() {
   const [products, setProducts] = useState<readonly ProductDto[]>([]);
   const [categories, setCategories] = useState<readonly CategoryDto[]>([]);
-  const [filters, setFilters] = useState<ProductListParams>({ limit: 24, sort: "newest" });
+  const [filters, setFilters] = useState<ProductListParams>({
+    limit: 24,
+    sort: "newest",
+  });
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -142,7 +158,11 @@ export function CatalogPage() {
       <form className="catalog-filters" onSubmit={submitSearch}>
         <label>
           Buscar
-          <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Nombre o producto" />
+          <input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Nombre o producto"
+          />
         </label>
         <label>
           Categoría
@@ -158,7 +178,9 @@ export function CatalogPage() {
           >
             <option value="">Todas</option>
             {categories.map((category) => (
-              <option key={category.id} value={category.id}>{category.name}</option>
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
             ))}
           </select>
         </label>
@@ -169,7 +191,9 @@ export function CatalogPage() {
             onChange={(event) =>
               setFilters((current) => ({
                 ...current,
-                sort: event.target.value as NonNullable<ProductListParams["sort"]>,
+                sort: event.target.value as NonNullable<
+                  ProductListParams["sort"]
+                >,
               }))
             }
           >
@@ -182,10 +206,18 @@ export function CatalogPage() {
       </form>
 
       {loading ? <p role="status">Cargando catálogo…</p> : null}
-      {error ? <p className="error-message" role="alert">{error}</p> : null}
-      {!loading && !error && products.length === 0 ? <p>No hay productos para estos filtros.</p> : null}
+      {error ? (
+        <p className="error-message" role="alert">
+          {error}
+        </p>
+      ) : null}
+      {!loading && !error && products.length === 0 ? (
+        <p>No hay productos para estos filtros.</p>
+      ) : null}
       <div className="product-grid">
-        {products.map((product) => <ProductCard key={product.id} product={product} />)}
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </div>
     </section>
   );
@@ -212,7 +244,10 @@ function CartLine({
     setBusy(true);
     setError(null);
     try {
-      const cart = await apiClient.commerce.setCartItem(item.productId, quantity);
+      const cart = await apiClient.commerce.setCartItem(
+        item.productId,
+        quantity,
+      );
       clearCheckoutIntent();
       onChanged(cart);
     } catch (cause) {
@@ -242,7 +277,9 @@ function CartLine({
       <div>
         <p className="eyebrow">{availabilityLabel(item)}</p>
         <h2>{item.product?.name ?? "Producto no disponible"}</h2>
-        <p>{item.product ? money.format(item.product.price) : item.productId}</p>
+        <p>
+          {item.product ? money.format(item.product.price) : item.productId}
+        </p>
       </div>
       <div className="cart-line__actions">
         <label>
@@ -256,15 +293,34 @@ function CartLine({
             disabled={busy}
           />
         </label>
-        <button disabled={busy || quantity === item.quantity || !Number.isSafeInteger(quantity) || quantity < 1 || quantity > 99} onClick={() => void updateQuantity()}>
+        <button
+          disabled={
+            busy ||
+            quantity === item.quantity ||
+            !Number.isSafeInteger(quantity) ||
+            quantity < 1 ||
+            quantity > 99
+          }
+          onClick={() => void updateQuantity()}
+        >
           Actualizar
         </button>
-        <button className="button-secondary" disabled={busy} onClick={() => void remove()}>
+        <button
+          className="button-secondary"
+          disabled={busy}
+          onClick={() => void remove()}
+        >
           Quitar
         </button>
       </div>
-      <strong>{item.lineTotal === null ? "—" : money.format(item.lineTotal)}</strong>
-      {error ? <p className="error-message" role="alert">{error}</p> : null}
+      <strong>
+        {item.lineTotal === null ? "—" : money.format(item.lineTotal)}
+      </strong>
+      {error ? (
+        <p className="error-message" role="alert">
+          {error}
+        </p>
+      ) : null}
     </article>
   );
 }
@@ -275,7 +331,8 @@ export function CartPage() {
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [checkoutResult, setCheckoutResult] = useState<CheckoutResultDto | null>(null);
+  const [checkoutResult, setCheckoutResult] =
+    useState<CheckoutResultDto | null>(null);
 
   const loadCart = useCallback(async () => {
     setLoading(true);
@@ -324,7 +381,10 @@ export function CartPage() {
       setCheckoutResult(result);
       setCart(await apiClient.commerce.getCart());
     } catch (cause) {
-      if (cause instanceof ApiResponseError && cause.code === "IDEMPOTENCY_KEY_REUSED") {
+      if (
+        cause instanceof ApiResponseError &&
+        cause.code === "IDEMPOTENCY_KEY_REUSED"
+      ) {
         clearCheckoutIntent();
       }
       setError(errorMessage(cause));
@@ -345,16 +405,24 @@ export function CartPage() {
         <div>
           <p className="eyebrow">Carrito server-authoritative</p>
           <h1>Tu carrito</h1>
-          <p>El backend vuelve a resolver stock, precio y total antes de confirmar.</p>
+          <p>
+            El backend vuelve a resolver stock, precio y total antes de
+            confirmar.
+          </p>
         </div>
         <Link to="/orders">Mis órdenes</Link>
       </div>
 
       {loading ? <p role="status">Cargando carrito…</p> : null}
-      {error ? <p className="error-message" role="alert">{error}</p> : null}
+      {error ? (
+        <p className="error-message" role="alert">
+          {error}
+        </p>
+      ) : null}
       {checkoutResult ? (
         <div className="success-message" role="status">
-          Orden <strong>{checkoutResult.order.code}</strong> confirmada{checkoutResult.replayed ? " (retry seguro)" : ""}.{" "}
+          Orden <strong>{checkoutResult.order.code}</strong> confirmada
+          {checkoutResult.replayed ? " (retry seguro)" : ""}.{" "}
           <Link to={`/orders/${checkoutResult.order.id}`}>Ver detalle</Link>
         </div>
       ) : null}
@@ -376,10 +444,23 @@ export function CartPage() {
         <aside className="checkout-summary">
           <span>Total autoritativo</span>
           <strong>{money.format(cart.total)}</strong>
-          {!cart.checkoutReady ? <p>Corregí las líneas no disponibles antes de comprar.</p> : null}
+          {!cart.checkoutReady ? (
+            <p>Corregí las líneas no disponibles antes de comprar.</p>
+          ) : null}
           <div className="action-row">
-            <button className="button-secondary" disabled={busy} onClick={() => void clearCart()}>Vaciar carrito</button>
-            <button disabled={busy || !cart.checkoutReady} onClick={() => void checkout()}>{busy ? "Procesando…" : "Confirmar compra"}</button>
+            <button
+              className="button-secondary"
+              disabled={busy}
+              onClick={() => void clearCart()}
+            >
+              Vaciar carrito
+            </button>
+            <button
+              disabled={busy || !cart.checkoutReady}
+              onClick={() => void checkout()}
+            >
+              {busy ? "Procesando…" : "Confirmar compra"}
+            </button>
           </div>
         </aside>
       ) : null}
@@ -414,18 +495,35 @@ export function OrdersPage() {
   }, [status]);
 
   if (status === "loading") return <p role="status">Verificando sesión…</p>;
-  if (status !== "authenticated") return <LoginRequired action="El historial de órdenes" />;
+  if (status !== "authenticated")
+    return <LoginRequired action="El historial de órdenes" />;
 
   return (
     <section className="commerce-page">
-      <div className="page-heading"><div><p className="eyebrow">Historial</p><h1>Mis órdenes</h1></div><Link to="/products">Seguir comprando</Link></div>
+      <div className="page-heading">
+        <div>
+          <p className="eyebrow">Historial</p>
+          <h1>Mis órdenes</h1>
+        </div>
+        <Link to="/products">Seguir comprando</Link>
+      </div>
       {loading ? <p role="status">Cargando órdenes…</p> : null}
-      {error ? <p className="error-message" role="alert">{error}</p> : null}
-      {!loading && !error && orders.length === 0 ? <p>Todavía no hay órdenes confirmadas.</p> : null}
+      {error ? (
+        <p className="error-message" role="alert">
+          {error}
+        </p>
+      ) : null}
+      {!loading && !error && orders.length === 0 ? (
+        <p>Todavía no hay órdenes confirmadas.</p>
+      ) : null}
       <div className="order-list">
         {orders.map((order) => (
           <article key={order.id} className="order-card">
-            <div><p className="eyebrow">{order.status}</p><h2>{order.code}</h2><p>{new Date(order.createdAt).toLocaleString("es-AR")}</p></div>
+            <div>
+              <p className="eyebrow">{order.status}</p>
+              <h2>{order.code}</h2>
+              <p>{new Date(order.createdAt).toLocaleString("es-AR")}</p>
+            </div>
             <strong>{money.format(order.total)}</strong>
             <Link to={`/orders/${order.id}`}>Ver detalle</Link>
           </article>
@@ -458,28 +556,46 @@ export function OrderDetailPage() {
   }, [orderId, status]);
 
   if (status === "loading") return <p role="status">Verificando sesión…</p>;
-  if (status !== "authenticated") return <LoginRequired action="El detalle de la orden" />;
+  if (status !== "authenticated")
+    return <LoginRequired action="El detalle de la orden" />;
   if (!orderId) return <p className="error-message">Orden inválida.</p>;
 
   return (
     <section className="commerce-page">
-      <div className="page-heading"><div><p className="eyebrow">Orden</p><h1>{order?.code ?? "Detalle de compra"}</h1></div><Link to="/orders">Volver a mis órdenes</Link></div>
-      {error ? <p className="error-message" role="alert">{error}</p> : null}
+      <div className="page-heading">
+        <div>
+          <p className="eyebrow">Orden</p>
+          <h1>{order?.code ?? "Detalle de compra"}</h1>
+        </div>
+        <Link to="/orders">Volver a mis órdenes</Link>
+      </div>
+      {error ? (
+        <p className="error-message" role="alert">
+          {error}
+        </p>
+      ) : null}
       {!order && !error ? <p role="status">Cargando orden…</p> : null}
       {order ? (
         <div className="order-detail panel">
-          <p>Estado: <strong>{order.status}</strong></p>
+          <p>
+            Estado: <strong>{order.status}</strong>
+          </p>
           <p>Fecha: {new Date(order.createdAt).toLocaleString("es-AR")}</p>
           <div className="order-lines">
             {order.lines.map((line) => (
               <div key={line.productId} className="order-line">
-                <span>{line.name} × {line.quantity}</span>
+                <span>
+                  {line.name} × {line.quantity}
+                </span>
                 <span>{money.format(line.unitPrice)} c/u</span>
                 <strong>{money.format(line.lineTotal)}</strong>
               </div>
             ))}
           </div>
-          <div className="order-total"><span>Total</span><strong>{money.format(order.total)}</strong></div>
+          <div className="order-total">
+            <span>Total</span>
+            <strong>{money.format(order.total)}</strong>
+          </div>
         </div>
       ) : null}
     </section>

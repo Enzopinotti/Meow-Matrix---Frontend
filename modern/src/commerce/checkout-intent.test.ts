@@ -1,8 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import {
-  clearCheckoutIntent,
-  getCheckoutIntentKey,
-} from "./checkout-intent";
+import { clearCheckoutIntent, getCheckoutIntentKey } from "./checkout-intent";
 
 function memoryStorage(): Storage {
   const values = new Map<string, string>();
@@ -96,11 +93,7 @@ describe("checkout intent", () => {
     clearCheckoutIntent(storage);
 
     expect(
-      getCheckoutIntentKey(
-        { id: "cart-1", version: 1 },
-        storage,
-        () => "id-2",
-      ),
+      getCheckoutIntentKey({ id: "cart-1", version: 1 }, storage, () => "id-2"),
     ).not.toBe(first);
   });
 

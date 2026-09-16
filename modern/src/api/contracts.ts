@@ -116,9 +116,7 @@ export type OrderDto = {
 };
 
 export type CartItemAvailability =
-  | "available"
-  | "unavailable"
-  | "insufficient_stock";
+  "available" | "unavailable" | "insufficient_stock";
 
 export type CartItemDto = {
   productId: string;
