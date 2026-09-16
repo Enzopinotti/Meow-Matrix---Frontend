@@ -52,7 +52,7 @@ export function App() {
             element={
               <StatusPage
                 title="Meow Matrix 2026"
-                description="La autoridad frontend 2026 incorpora sesión backend-owned, comercio transaccional B4 y archivos privados B5 con multipart tipado, descarga autenticada y storage fuera del navegador."
+                description="La autoridad frontend 2026 incorpora sesión backend-owned, comercio B4 con checkout idempotente y archivos privados B5 con multipart tipado, descarga autenticada y storage fuera del navegador."
                 apiOrigin={apiOrigin}
               />
             }
