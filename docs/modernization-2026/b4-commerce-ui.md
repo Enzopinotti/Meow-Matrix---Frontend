@@ -48,6 +48,18 @@ Rules:
 
 The client does not send order lines, prices, totals, purchaser id or stock during checkout. It sends only `POST /api/v1/checkout` with the idempotency header and the B3 cookie credentials.
 
+## Browser storage security boundary
+
+B3 prohibited browser-owned authentication storage. B4 keeps that rule and narrows the only storage exception instead of weakening it globally:
+
+- `document.cookie` is forbidden from maintained frontend source;
+- `localStorage` is forbidden from maintained frontend source;
+- `sessionStorage` is allowed only in `src/commerce/checkout-intent.ts`;
+- that file may persist only the non-secret checkout idempotency intent;
+- authentication continues to depend exclusively on the backend-owned HttpOnly cookie.
+
+The permanent CI workflow enforces this allow-list. A future `sessionStorage` use anywhere else under `src` fails the browser auth-boundary gate.
+
 ## Stock and concurrency conflicts
 
 `STOCK_CHANGED`, `CART_CHANGED` and `CART_EMPTY` trigger a fresh cart read. The UI does not optimistically claim that an order succeeded when the backend rejected the transaction.
@@ -70,6 +82,7 @@ Checkout remains a normal button action and does not hide unavailable-line error
 
 B4 frontend is complete only when permanent CI verifies:
 
+- production dependency audit at `high` severity or above;
 - typed commerce client paths and cookie credentials;
 - no browser-provided user/purchaser/price/total authority;
 - checkout idempotency key preservation for the same cart version;
@@ -77,4 +90,6 @@ B4 frontend is complete only when permanent CI verifies:
 - anonymous cart/order guard;
 - catalog/cart/order route wiring;
 - format, lint, TypeScript, tests and build;
-- existing auth-boundary and artifact-budget checks.
+- auth-boundary allow-list and artifact-budget checks.
+
+A one-shot qualification pass already proved the formatted tree with zero reported production dependency vulnerabilities, format/lint/typecheck, all 21 tests and the production build. The merge gate remains the permanent workflow on the final human-authored HEAD.
