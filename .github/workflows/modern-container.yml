@@ -10,6 +10,7 @@ on:
       - "modern/package-lock.json"
       - "modern/src/**"
       - ".github/workflows/modern-container.yml"
+      - ".github/workflows/modern-quality.yml"
   push:
     branches:
       - main
@@ -21,6 +22,7 @@ on:
       - "modern/package-lock.json"
       - "modern/src/**"
       - ".github/workflows/modern-container.yml"
+      - ".github/workflows/modern-quality.yml"
 
 permissions:
   contents: read
