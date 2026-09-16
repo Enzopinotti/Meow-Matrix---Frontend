@@ -25,9 +25,9 @@ const anonymousAuthApi = {
 };
 
 describe("App routing", () => {
-  it("renders an honest reconstruction state for historical product routes", () => {
+  it("publishes the B4 commerce authority on the home route", () => {
     render(
-      <MemoryRouter initialEntries={["/products"]}>
+      <MemoryRouter initialEntries={["/"]}>
         <AuthProvider authApi={anonymousAuthApi}>
           <App />
         </AuthProvider>
@@ -35,8 +35,23 @@ describe("App routing", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "Catálogo en reconstrucción" }),
+      screen.getByRole("heading", { name: "Meow Matrix 2026" }),
     ).toBeTruthy();
-    expect(screen.getByText("No configurada todavía")).toBeTruthy();
+    expect(screen.getByText(/checkout idempotente/i)).toBeTruthy();
+  });
+
+  it("does not expose a cart to an anonymous browser", async () => {
+    render(
+      <MemoryRouter initialEntries={["/cart"]}>
+        <AuthProvider authApi={anonymousAuthApi}>
+          <App />
+        </AuthProvider>
+      </MemoryRouter>,
+    );
+
+    expect(
+      await screen.findByRole("heading", { name: "Necesitás iniciar sesión" }),
+    ).toBeTruthy();
+    expect(screen.getByRole("link", { name: "Ingresar" })).toBeTruthy();
   });
 });
