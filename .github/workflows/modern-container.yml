@@ -44,7 +44,7 @@ jobs:
       - name: Verify image runtime contract
         shell: bash
         run: |
-          set -euo pipefail
+          set -euxo pipefail
 
           configured_user="$(docker image inspect meow-matrix-web:b6 --format '{{.Config.User}}')"
           test -n "$configured_user"
@@ -72,10 +72,13 @@ jobs:
 
           test "$(docker exec "$container_id" id -u)" != "0"
 
-          curl --fail --silent http://127.0.0.1:4173/ | grep -q '<div id="root"></div>'
-          curl --fail --silent http://127.0.0.1:4173/files | grep -q '<div id="root"></div>'
+          root_html="$(curl --fail --silent http://127.0.0.1:4173/)"
+          printf '%s\n' "$root_html" | grep -q '<div id="root"></div>'
+          files_html="$(curl --fail --silent http://127.0.0.1:4173/files)"
+          printf '%s\n' "$files_html" | grep -q '<div id="root"></div>'
 
           headers="$(curl --fail --silent --head http://127.0.0.1:4173/files | tr -d '\r')"
+          printf '%s\n' "$headers"
           printf '%s\n' "$headers" | grep -qi '^content-security-policy:'
           printf '%s\n' "$headers" | grep -qi '^x-content-type-options: nosniff$'
           printf '%s\n' "$headers" | grep -qi '^x-frame-options: DENY$'
@@ -85,7 +88,8 @@ jobs:
           health="$(curl --fail --silent http://127.0.0.1:4173/healthz)"
           test "$health" = '{"status":"ok"}'
 
-          first_asset="$(curl --fail --silent http://127.0.0.1:4173/ | grep -oE '/assets/[^" ]+\.js' | head -n1)"
+          first_asset="$(printf '%s\n' "$root_html" | grep -oE '/assets/[^" ]+\.js' | head -n1)"
           test -n "$first_asset"
           asset_headers="$(curl --fail --silent --head "http://127.0.0.1:4173${first_asset}" | tr -d '\r')"
+          printf '%s\n' "$asset_headers"
           printf '%s\n' "$asset_headers" | grep -qi '^cache-control: public, max-age=31536000, immutable$'
