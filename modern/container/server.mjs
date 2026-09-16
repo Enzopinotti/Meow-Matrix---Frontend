@@ -29,23 +29,35 @@ const mimeTypes = new Map([
 ]);
 
 function applySecurityHeaders(response) {
-  response.setHeader("Content-Security-Policy", [
-    "default-src 'self'",
-    "base-uri 'none'",
-    "connect-src 'self' http: https:",
-    "font-src 'self' data:",
-    "form-action 'self'",
-    "frame-ancestors 'none'",
-    "img-src 'self' data: blob: http: https:",
-    "object-src 'none'",
-    "script-src 'self'",
-    "style-src 'self' 'unsafe-inline'",
-  ].join("; "));
+  response.setHeader(
+    "Content-Security-Policy",
+    [
+      "default-src 'self'",
+      "base-uri 'none'",
+      "connect-src 'self' http: https:",
+      "font-src 'self' data:",
+      "form-action 'self'",
+      "frame-ancestors 'none'",
+      "img-src 'self' data: blob: http: https:",
+      "object-src 'none'",
+      "script-src 'self'",
+      "style-src 'self' 'unsafe-inline'",
+    ].join("; "),
+  );
   response.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-  response.setHeader("Permissions-Policy", "camera=(), geolocation=(), microphone=()");
+  response.setHeader(
+    "Permissions-Policy",
+    "camera=(), geolocation=(), microphone=()",
+  );
   response.setHeader("Referrer-Policy", "no-referrer");
   response.setHeader("X-Content-Type-Options", "nosniff");
   response.setHeader("X-Frame-Options", "DENY");
+}
+
+function cachePolicy(requestPath) {
+  return requestPath.startsWith("/assets/")
+    ? "public, max-age=31536000, immutable"
+    : "no-store";
 }
 
 function safePath(pathname) {
@@ -86,13 +98,11 @@ async function sendFile(response, path, requestPath) {
   const stats = await stat(path);
   response.statusCode = 200;
   response.setHeader("Content-Length", String(stats.size));
-  response.setHeader("Content-Type", mimeTypes.get(extension) ?? "application/octet-stream");
   response.setHeader(
-    "Cache-Control",
-    requestPath.startsWith("/assets/")
-      ? "public, max-age=31536000, immutable"
-      : "no-store",
+    "Content-Type",
+    mimeTypes.get(extension) ?? "application/octet-stream",
   );
+  response.setHeader("Cache-Control", cachePolicy(requestPath));
   createReadStream(path).pipe(response);
 }
 
@@ -132,8 +142,10 @@ const server = createServer(async (request, response) => {
     response.setHeader("Content-Length", String(stats.size));
     response.setHeader(
       "Content-Type",
-      mimeTypes.get(extname(selected).toLowerCase()) ?? "application/octet-stream",
+      mimeTypes.get(extname(selected).toLowerCase()) ??
+        "application/octet-stream",
     );
+    response.setHeader("Cache-Control", cachePolicy(url.pathname));
     return response.end();
   }
 
