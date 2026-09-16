@@ -43,6 +43,9 @@ jobs:
       - name: Install locked dependencies
         run: npm ci --ignore-scripts
 
+      - name: Audit production dependency graph
+        run: npm audit --omit=dev --audit-level=high
+
       - name: Run maintained quality contract
         run: npm run check
 
@@ -50,8 +53,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if grep -R -n -E 'document\.cookie|localStorage|sessionStorage' src --include='*.ts' --include='*.tsx'; then
-            echo "Browser-owned credential/storage primitive detected in maintained frontend."
+
+          if grep -R -n -E 'document\.cookie|localStorage' src --include='*.ts' --include='*.tsx'; then
+            echo "Browser-owned credential primitive detected in maintained frontend."
+            exit 1
+          fi
+
+          session_storage_hits="$(grep -R -n -E 'sessionStorage' src --include='*.ts' --include='*.tsx' || true)"
+          unexpected_hits="$(printf '%s\n' "$session_storage_hits" | grep -v '^src/commerce/checkout-intent\.ts:' || true)"
+          if [ -n "$unexpected_hits" ]; then
+            echo "$unexpected_hits"
+            echo "sessionStorage is allowed only for the non-secret B4 checkout idempotency intent."
             exit 1
           fi
 

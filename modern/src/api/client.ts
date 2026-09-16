@@ -3,8 +3,13 @@ import {
   isErrorEnvelope,
   type ApiErrorDetail,
   type AuthSessionDto,
+  type CartViewDto,
   type CategoryDto,
+  type CheckoutResultDto,
   type LoginRequest,
+  type OrderDto,
+  type OrderListDto,
+  type OrderListParams,
   type PasswordResetConfirmRequest,
   type ProductDto,
   type ProductListDto,
@@ -55,9 +60,17 @@ function productListSearch(params: ProductListParams): string {
   return value.length === 0 ? "" : `?${value}`;
 }
 
-function jsonRequest(body: unknown): RequestInit {
+function orderListSearch(params: OrderListParams): string {
+  const search = new URLSearchParams();
+  if (params.limit !== undefined) search.set("limit", String(params.limit));
+  if (params.offset !== undefined) search.set("offset", String(params.offset));
+  const value = search.toString();
+  return value.length === 0 ? "" : `?${value}`;
+}
+
+function jsonRequest(body: unknown, method = "POST"): RequestInit {
   return {
-    method: "POST",
+    method,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   };
@@ -177,7 +190,67 @@ export function createApiClient(
     },
   };
 
-  return { request, auth, catalog };
+  const commerce = {
+    async getCart(): Promise<CartViewDto> {
+      const response =
+        await request<SuccessEnvelope<CartViewDto>>("/api/v1/cart");
+      return response.data;
+    },
+
+    async setCartItem(
+      productId: string,
+      quantity: number,
+    ): Promise<CartViewDto> {
+      const response = await request<SuccessEnvelope<CartViewDto>>(
+        `/api/v1/cart/items/${encodeURIComponent(productId)}`,
+        jsonRequest({ quantity }, "PUT"),
+      );
+      return response.data;
+    },
+
+    async removeCartItem(productId: string): Promise<CartViewDto> {
+      const response = await request<SuccessEnvelope<CartViewDto>>(
+        `/api/v1/cart/items/${encodeURIComponent(productId)}`,
+        { method: "DELETE" },
+      );
+      return response.data;
+    },
+
+    async clearCart(): Promise<CartViewDto> {
+      const response = await request<SuccessEnvelope<CartViewDto>>(
+        "/api/v1/cart",
+        { method: "DELETE" },
+      );
+      return response.data;
+    },
+
+    async checkout(idempotencyKey: string): Promise<CheckoutResultDto> {
+      const response = await request<SuccessEnvelope<CheckoutResultDto>>(
+        "/api/v1/checkout",
+        {
+          method: "POST",
+          headers: { "Idempotency-Key": idempotencyKey },
+        },
+      );
+      return response.data;
+    },
+
+    async listOrders(params: OrderListParams = {}): Promise<OrderListDto> {
+      const response = await request<SuccessEnvelope<OrderListDto>>(
+        `/api/v1/orders${orderListSearch(params)}`,
+      );
+      return response.data;
+    },
+
+    async getOrder(orderId: string): Promise<OrderDto> {
+      const response = await request<SuccessEnvelope<OrderDto>>(
+        `/api/v1/orders/${encodeURIComponent(orderId)}`,
+      );
+      return response.data;
+    },
+  };
+
+  return { request, auth, catalog, commerce };
 }
 
 export const apiClient = createApiClient();
