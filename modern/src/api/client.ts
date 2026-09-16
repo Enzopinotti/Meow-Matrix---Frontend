@@ -11,6 +11,9 @@ import {
   type OrderListDto,
   type OrderListParams,
   type PasswordResetConfirmRequest,
+  type PrivateFileDto,
+  type PrivateFileListDto,
+  type PrivateFilePurpose,
   type ProductDto,
   type ProductListDto,
   type ProductListParams,
@@ -48,6 +51,23 @@ async function readJson(response: Response): Promise<unknown> {
   return response.json();
 }
 
+async function responseError(response: Response): Promise<ApiResponseError> {
+  const body = await readJson(response);
+  if (isErrorEnvelope(body)) {
+    return new ApiResponseError(
+      response.status,
+      body.error.code,
+      body.error.message,
+      body.error.details,
+    );
+  }
+  return new ApiResponseError(
+    response.status,
+    "UNEXPECTED_API_ERROR",
+    `API request failed with HTTP ${response.status}`,
+  );
+}
+
 function productListSearch(params: ProductListParams): string {
   const search = new URLSearchParams();
   if (params.limit !== undefined) search.set("limit", String(params.limit));
@@ -79,12 +99,12 @@ function jsonRequest(body: unknown, method = "POST"): RequestInit {
 export function createApiClient(
   origin = resolveApiOrigin(import.meta.env.VITE_API_ORIGIN),
 ) {
-  async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  async function execute(path: string, init: RequestInit = {}): Promise<Response> {
     if (!origin) {
       throw new ApiConfigurationError("API origin is not configured");
     }
 
-    const response = await fetch(new URL(path, `${origin}/`), {
+    return fetch(new URL(path, `${origin}/`), {
       ...init,
       credentials: "include",
       headers: {
@@ -92,6 +112,10 @@ export function createApiClient(
         ...init.headers,
       },
     });
+  }
+
+  async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+    const response = await execute(path, init);
     const body = await readJson(response);
 
     if (!response.ok) {
@@ -250,7 +274,43 @@ export function createApiClient(
     },
   };
 
-  return { request, auth, catalog, commerce };
+  const files = {
+    async list(): Promise<PrivateFileListDto> {
+      const response = await request<SuccessEnvelope<PrivateFileListDto>>(
+        "/api/v1/files",
+      );
+      return response.data;
+    },
+
+    async upload(purpose: PrivateFilePurpose, file: File): Promise<PrivateFileDto> {
+      const form = new FormData();
+      form.append("file", file, file.name);
+      const response = await request<SuccessEnvelope<PrivateFileDto>>(
+        `/api/v1/files/purposes/${encodeURIComponent(purpose)}`,
+        { method: "POST", body: form },
+      );
+      return response.data;
+    },
+
+    async download(fileId: string): Promise<Blob> {
+      const response = await execute(
+        `/api/v1/files/${encodeURIComponent(fileId)}/content`,
+        { headers: { Accept: "*/*" } },
+      );
+      if (!response.ok) {
+        throw await responseError(response);
+      }
+      return response.blob();
+    },
+
+    async delete(fileId: string): Promise<void> {
+      await request<null>(`/api/v1/files/${encodeURIComponent(fileId)}`, {
+        method: "DELETE",
+      });
+    },
+  };
+
+  return { request, auth, catalog, commerce, files };
 }
 
 export const apiClient = createApiClient();
