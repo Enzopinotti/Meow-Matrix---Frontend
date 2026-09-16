@@ -54,15 +54,19 @@ function filesApi(items: readonly PrivateFileDto[] = []) {
   return {
     list: vi.fn(async () => ({ items })),
     upload: vi.fn(async () => activeFile),
-    download: vi.fn(async () => new Blob(["private"], { type: "application/pdf" })),
+    download: vi.fn(
+      async () => new Blob(["private"], { type: "application/pdf" }),
+    ),
     delete: vi.fn(async () => undefined),
   };
 }
 
-function renderPage(options: {
-  authenticated?: boolean;
-  items?: readonly PrivateFileDto[];
-} = {}) {
+function renderPage(
+  options: {
+    authenticated?: boolean;
+    items?: readonly PrivateFileDto[];
+  } = {},
+) {
   const api = filesApi(options.items);
   render(
     <MemoryRouter>
@@ -126,9 +130,8 @@ describe("B5 PrivateFilesPage", () => {
     });
     fireEvent.click(uploadButtons[0] as HTMLButtonElement);
 
-    expect(await screen.findByRole("alert")).toHaveTextContent(
-      /tipo declarado por el navegador/i,
-    );
+    const alert = await screen.findByRole("alert");
+    expect(alert.textContent).toMatch(/tipo declarado por el navegador/i);
     expect(api.upload).not.toHaveBeenCalled();
   });
 
