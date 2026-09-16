@@ -1,6 +1,6 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { ApiResponseError } from "../api/client";
 import type { UserDto } from "../api/contracts";
 import { AuthProvider } from "./AuthContext";
@@ -14,6 +14,11 @@ const user: UserDto = {
   role: "user",
   avatarUrl: null,
 };
+
+afterEach(() => {
+  cleanup();
+  vi.restoreAllMocks();
+});
 
 function authApi(overrides: Record<string, unknown> = {}) {
   return {
