@@ -113,7 +113,7 @@ describe("B3 auth pages", () => {
     });
     fireEvent.submit(screen.getByLabelText("Nombre").closest("form")!);
 
-    expect(await screen.findByRole("alert")).toHaveTextContent(
+    expect((await screen.findByRole("alert")).textContent).toContain(
       "Las contraseñas no coinciden.",
     );
     expect(api.register).not.toHaveBeenCalled();
@@ -138,7 +138,7 @@ describe("B3 auth pages", () => {
     });
     fireEvent.submit(screen.getByLabelText("Email").closest("form")!);
 
-    expect(await screen.findByRole("alert")).toHaveTextContent(
+    expect((await screen.findByRole("alert")).textContent).toContain(
       "La autenticación está temporalmente fuera de servicio.",
     );
   });
