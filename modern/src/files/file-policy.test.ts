@@ -19,9 +19,7 @@ describe("B5 private file policies", () => {
     expect(privateFilePolicies["premium-identification"].maxBytes).toBe(
       5 * 1024 * 1024,
     );
-    expect(acceptedFileTypes("avatar")).toBe(
-      "image/jpeg,image/png,image/webp",
-    );
+    expect(acceptedFileTypes("avatar")).toBe("image/jpeg,image/png,image/webp");
     expect(acceptedFileTypes("premium-bank-statement")).toContain(
       "application/pdf",
     );

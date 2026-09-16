@@ -99,7 +99,10 @@ function jsonRequest(body: unknown, method = "POST"): RequestInit {
 export function createApiClient(
   origin = resolveApiOrigin(import.meta.env.VITE_API_ORIGIN),
 ) {
-  async function execute(path: string, init: RequestInit = {}): Promise<Response> {
+  async function execute(
+    path: string,
+    init: RequestInit = {},
+  ): Promise<Response> {
     if (!origin) {
       throw new ApiConfigurationError("API origin is not configured");
     }
@@ -276,13 +279,15 @@ export function createApiClient(
 
   const files = {
     async list(): Promise<PrivateFileListDto> {
-      const response = await request<SuccessEnvelope<PrivateFileListDto>>(
-        "/api/v1/files",
-      );
+      const response =
+        await request<SuccessEnvelope<PrivateFileListDto>>("/api/v1/files");
       return response.data;
     },
 
-    async upload(purpose: PrivateFilePurpose, file: File): Promise<PrivateFileDto> {
+    async upload(
+      purpose: PrivateFilePurpose,
+      file: File,
+    ): Promise<PrivateFileDto> {
       const form = new FormData();
       form.append("file", file, file.name);
       const response = await request<SuccessEnvelope<PrivateFileDto>>(

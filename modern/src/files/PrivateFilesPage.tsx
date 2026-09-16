@@ -23,11 +23,13 @@ type StatusMessage = {
 
 function errorMessage(error: unknown): string {
   if (error instanceof ApiResponseError) {
-    if (error.status === 401) return "Tu sesión ya no es válida. Volvé a ingresar.";
+    if (error.status === 401)
+      return "Tu sesión ya no es válida. Volvé a ingresar.";
     if (error.code === "FILE_PURPOSE_ALREADY_EXISTS") {
       return "Ya existe un archivo activo para este espacio. Eliminá el actual antes de subir otro.";
     }
-    if (error.status === 413) return "El archivo supera el límite permitido por el servidor.";
+    if (error.status === 413)
+      return "El archivo supera el límite permitido por el servidor.";
     if (error.status === 415) {
       return "El servidor rechazó el formato o detectó que el contenido no coincide con el tipo declarado.";
     }
@@ -36,15 +38,17 @@ function errorMessage(error: unknown): string {
     }
     return error.message;
   }
-  return error instanceof Error ? error.message : "No se pudo completar la operación.";
+  return error instanceof Error
+    ? error.message
+    : "No se pudo completar la operación.";
 }
 
 function fileByPurpose(
   items: readonly PrivateFileDto[],
 ): Partial<Record<PrivateFilePurpose, PrivateFileDto>> {
-  return Object.fromEntries(items.map((item) => [item.purpose, item])) as Partial<
-    Record<PrivateFilePurpose, PrivateFileDto>
-  >;
+  return Object.fromEntries(
+    items.map((item) => [item.purpose, item]),
+  ) as Partial<Record<PrivateFilePurpose, PrivateFileDto>>;
 }
 
 function triggerPrivateDownload(blob: Blob, filename: string) {
@@ -67,7 +71,9 @@ export function PrivateFilesPage({
   const { status } = useAuth();
   const [items, setItems] = useState<readonly PrivateFileDto[]>([]);
   const [loading, setLoading] = useState(false);
-  const [busyPurpose, setBusyPurpose] = useState<PrivateFilePurpose | null>(null);
+  const [busyPurpose, setBusyPurpose] = useState<PrivateFilePurpose | null>(
+    null,
+  );
   const [busyFileId, setBusyFileId] = useState<string | null>(null);
   const [selected, setSelected] = useState<
     Partial<Record<PrivateFilePurpose, File>>
@@ -198,11 +204,16 @@ export function PrivateFilesPage({
           <h1>Archivos privados</h1>
           <p className="page-lede">
             Cada espacio admite un solo archivo activo. El navegador hace una
-            validación preliminar de tamaño/formato; el backend vuelve a verificar
-            los bytes reales antes de activar el archivo.
+            validación preliminar de tamaño/formato; el backend vuelve a
+            verificar los bytes reales antes de activar el archivo.
           </p>
         </div>
-        <button type="button" className="secondary-button" onClick={() => void refresh()} disabled={loading}>
+        <button
+          type="button"
+          className="secondary-button"
+          onClick={() => void refresh()}
+          disabled={loading}
+        >
           {loading ? "Actualizando…" : "Actualizar"}
         </button>
       </div>
@@ -232,13 +243,18 @@ export function PrivateFilesPage({
                   <h2>{policy.label}</h2>
                   <p>{policy.description}</p>
                 </div>
-                <span className={active ? "status-chip status-chip--ready" : "status-chip"}>
+                <span
+                  className={
+                    active ? "status-chip status-chip--ready" : "status-chip"
+                  }
+                >
                   {active ? "Guardado" : "Vacío"}
                 </span>
               </div>
 
               <p className="private-file-rules">
-                {policy.extensions.join(", ").toUpperCase()} · máximo {formatBytes(policy.maxBytes)}
+                {policy.extensions.join(", ").toUpperCase()} · máximo{" "}
+                {formatBytes(policy.maxBytes)}
               </p>
 
               {active ? (
@@ -285,8 +301,8 @@ export function PrivateFilesPage({
                     )}
                   </div>
                   <p className="private-file-replace-note">
-                    Para reemplazar este archivo primero eliminá el actual. B5 no
-                    finge un reemplazo atómico que el backend no ofrece.
+                    Para reemplazar este archivo primero eliminá el actual. B5
+                    no finge un reemplazo atómico que el backend no ofrece.
                   </p>
                 </div>
               ) : (
@@ -299,7 +315,10 @@ export function PrivateFilesPage({
                     disabled={busy}
                     onChange={(event) => {
                       const file = event.target.files?.item(0) ?? undefined;
-                      setSelected((current) => ({ ...current, [purpose]: file }));
+                      setSelected((current) => ({
+                        ...current,
+                        [purpose]: file,
+                      }));
                       setMessage(null);
                     }}
                   />
@@ -313,7 +332,9 @@ export function PrivateFilesPage({
                     onClick={() => void uploadPurpose(purpose)}
                     disabled={!chosen || busy}
                   >
-                    {busyPurpose === purpose ? "Subiendo…" : "Guardar de forma privada"}
+                    {busyPurpose === purpose
+                      ? "Subiendo…"
+                      : "Guardar de forma privada"}
                   </button>
                 </div>
               )}
@@ -325,11 +346,11 @@ export function PrivateFilesPage({
       <aside className="privacy-note" aria-label="Límites del flujo B5">
         <h2>Qué significa guardar acá</h2>
         <p>
-          Estos archivos quedan privados y asociados a tu cuenta. Guardar los tres
-          documentos Premium no envía automáticamente una solicitud ni cambia tu
-          rol: ese workflow requiere un contrato propio del backend. Del mismo modo,
-          la confirmación de una orden no se presenta como prueba de que un email fue
-          entregado.
+          Estos archivos quedan privados y asociados a tu cuenta. Guardar los
+          tres documentos Premium no envía automáticamente una solicitud ni
+          cambia tu rol: ese workflow requiere un contrato propio del backend.
+          Del mismo modo, la confirmación de una orden no se presenta como
+          prueba de que un email fue entregado.
         </p>
       </aside>
     </section>

@@ -171,10 +171,7 @@ export const privateFilePurposes = [
 
 export type PrivateFilePurpose = (typeof privateFilePurposes)[number];
 export type PrivateFileMediaType =
-  | "image/jpeg"
-  | "image/png"
-  | "image/webp"
-  | "application/pdf";
+  "image/jpeg" | "image/png" | "image/webp" | "application/pdf";
 
 export type PrivateFileDto = {
   id: string;

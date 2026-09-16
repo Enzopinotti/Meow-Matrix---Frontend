@@ -100,7 +100,9 @@ describe("B5 private files API client", () => {
   });
 
   it("deletes by opaque file id without sending owner or storage-path data", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 204 }));
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(null, { status: 204 }));
     vi.stubGlobal("fetch", fetchMock);
 
     const client = createApiClient("https://api.example.com");

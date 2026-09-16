@@ -42,12 +42,12 @@ Private downloads return a `Blob` in memory. The UI creates a temporary object U
 
 The frontend mirrors the public parts of the backend contract only for fast UX feedback:
 
-| Purpose | Browser-declared types | Local limit |
-| --- | --- | ---: |
-| avatar | JPEG, PNG, WebP | 2 MiB |
-| premium-identification | JPEG, PNG, PDF | 5 MiB |
-| premium-address | JPEG, PNG, PDF | 5 MiB |
-| premium-bank-statement | JPEG, PNG, PDF | 5 MiB |
+| Purpose                | Browser-declared types | Local limit |
+| ---------------------- | ---------------------- | ----------: |
+| avatar                 | JPEG, PNG, WebP        |       2 MiB |
+| premium-identification | JPEG, PNG, PDF         |       5 MiB |
+| premium-address        | JPEG, PNG, PDF         |       5 MiB |
+| premium-bank-statement | JPEG, PNG, PDF         |       5 MiB |
 
 This validation is not an integrity claim. Backend B5 remains authoritative for magic bytes, MIME/extension agreement, size, checksum, ownership and lifecycle.
 
