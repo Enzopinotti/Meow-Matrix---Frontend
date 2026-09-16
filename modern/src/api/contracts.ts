@@ -67,6 +67,28 @@ export type UserDto = {
   avatarUrl: string | null;
 };
 
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
+
+export type RegisterRequest = {
+  name: string;
+  lastName: string;
+  email: string;
+  password: string;
+};
+
+export type PasswordResetConfirmRequest = {
+  token: string;
+  password: string;
+};
+
+export type AuthSessionDto = {
+  user: UserDto;
+  expiresAt: string;
+};
+
 export type TicketDto = {
   id: string;
   code: string;
