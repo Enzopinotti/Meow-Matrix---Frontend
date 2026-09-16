@@ -24,9 +24,9 @@ describe("createApiClient", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     const client = createApiClient("https://api.example.com");
-    await expect(client.request<{ status: string }>("/healthz")).resolves.toEqual(
-      { status: "ok" },
-    );
+    await expect(
+      client.request<{ status: string }>("/healthz"),
+    ).resolves.toEqual({ status: "ok" });
 
     expect(fetchMock).toHaveBeenCalledOnce();
     expect(fetchMock.mock.calls[0]?.[0].toString()).toBe(
