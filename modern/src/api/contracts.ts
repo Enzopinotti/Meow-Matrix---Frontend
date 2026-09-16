@@ -115,12 +115,53 @@ export type OrderDto = {
   createdAt: string;
 };
 
+export type CartItemAvailability =
+  | "available"
+  | "unavailable"
+  | "insufficient_stock";
+
+export type CartItemDto = {
+  productId: string;
+  product: ProductDto | null;
+  quantity: number;
+  lineTotal: number | null;
+  availability: CartItemAvailability;
+  updatedAt: string;
+};
+
+export type CartViewDto = {
+  id: string;
+  userId: string;
+  items: readonly CartItemDto[];
+  total: number;
+  checkoutReady: boolean;
+  version: number;
+  updatedAt: string;
+};
+
+export type CheckoutResultDto = {
+  order: OrderDto;
+  replayed: boolean;
+};
+
+export type OrderListDto = {
+  items: readonly OrderDto[];
+  total: number;
+  limit: number;
+  offset: number;
+};
+
 export type ProductListParams = {
   limit?: number;
   offset?: number;
   q?: string;
   categoryId?: string;
   sort?: "newest" | "price_asc" | "price_desc";
+};
+
+export type OrderListParams = {
+  limit?: number;
+  offset?: number;
 };
 
 export function isErrorEnvelope(value: unknown): value is ErrorEnvelope {
